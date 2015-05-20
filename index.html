@@ -1,8 +1,18 @@
 ---
-layout: post
-title: Hello World
+layout: default
 ---
 
-##Hello World
+<div class="posts">
+  {% for post in site.posts %}
+    <article class="post">
 
-Welcome to the placeholder for my blog. Not much to see here, but thanks for dropping by.
+      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+
+      <div class="entry">
+        {{ post.excerpt }}
+      </div>
+
+      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+    </article>
+  {% endfor %}
+</div>
