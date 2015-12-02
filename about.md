@@ -1,15 +1,11 @@
 ---
 layout: page
-title: About
+title: About Me
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+As a data science manager for Deloitte Digital's Social Intelligence practice, I push the envelope in the application of social data. My experience includes 8 years of social data analysis, across a wide range of domains. I provide a holistic perspective to the data though my background in statistics, development, and graphic design. I am passionate about transforming data into understanding in a way that excites and enriches.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[diggity@adamcornille.com](mailto:diggity@adamcornille.com)
