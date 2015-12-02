@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-I grew up in the Midwest and studied in beautiful Madison, WI, where I developed a love of cheese & beer. I pursued graphic and web design while fostering a love of messing with code and computers. In 2008 I fled massive snow falls for the mossy home of Bill Gates and Bigfoot. Since then I have been working in research and analysis, primarily of social media data. I quickly fell in love with statistics and have been studying data science aggressively.
+I grew up in the Midwest and studied in beautiful Madison, WI, where I developed a fondness for cheese & beer. I pursued graphic and web design while fostering a love of messing with code and computers. In 2008 I fled massive snow falls for the mossy home of Bill Gates and Bigfoot. Since then I have been working in research and analysis, primarily of social media data. I quickly fell in love with statistics and have been studying data science aggressively.
 
 I am now a data science manager for Deloitte Digital's Social Intelligence practice. I endeavor to provide a holistic perspective to data though my background in statistics, development, and graphic design. I am passionate about transforming data into understanding in a way that excites and enriches.
 
