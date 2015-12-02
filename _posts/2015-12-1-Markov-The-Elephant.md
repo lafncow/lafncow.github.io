@@ -3,11 +3,11 @@ layout: post
 title: Markov The Elephant
 ---
 
-_A Quick Toy Problem_\\
+_A Quick Toy Problem_
 
-To kick off my blog, here is a fun little math problem that came to me recently.\\
+To kick off my blog, here is a fun little math problem that came to me recently.
 
-![Elephant Toy]({{ site.url }}/images/elephantToy.PNG)\\
+![Elephant Toy]({{ site.url }}/images/elephantToy.PNG)
 
 Last year my kids got an elephant toy which tossed balls in the air while playing incredibly loud music. They LOVE it. Each time it tosses a ball in the air, it has roughly a 50% chance of falling into the elephant's left ear and being tossed into the air again. Otherwise, it falls into the elephant's right ear and is deposited at the elephant's feet (I think the designers played a little fast and loose with elephant physiology).
 
