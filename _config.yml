@@ -6,7 +6,7 @@
 name: Adam Cornille
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: Data Scientist, Brewer, Designer, Seattlite, Ramen Addict
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: http://lafncow.github.io/images/AdamCornille_Circle_sm.png
@@ -18,7 +18,7 @@ avatar: http://lafncow.github.io/images/AdamCornille_Circle_sm.png
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email:
+  email: diggity@adamcornille.com
   facebook:
   flickr:
   github:
@@ -37,7 +37,7 @@ footer-links:
 disqus:
 
 # Enter your Google Analytics web tracking code (e.g. UA-2110908-2) to activate tracking
-google_analytics:
+google_analytics: UA-4073704-3
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
