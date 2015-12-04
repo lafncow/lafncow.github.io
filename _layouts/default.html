@@ -5,11 +5,14 @@
 
     {% include meta.html %}
     <!--Jekyll variables shared with Javascript-->
-    {% if page.abtests %}
-      <script type="text/javascript">
-        var abTests = {{ page.abtests }};
-      </script>
-    {% endif %}
+    
+    <script type="text/javascript">
+      var abTests;
+      {% if page.abtests %}
+      var abTests = {{ page.abtests }};
+      {% endif %}
+    </script>
+    
     <!-- scripts-->
     <script src="/js/adamcornille.js"></script>
 
