@@ -7,6 +7,11 @@
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 		ga('create', '{{ site.google_analytics }}', 'auto');
+		// If we're doing A/B testing, make sure we include the proper variables
+		if (abTests) {
+			// push value with page-level scope, format: "test1,test2,test3 010"
+		    ga( 'set', 'dimension'+abTest_gaIndex, abTests.join(',')+' '+abTestVals.join('') );
+		}
 		ga('send', 'pageview', {
 		  'page': '{{ page.url }}',
 		  'title': '{{ page.title | replace: "'", "\\'" }}'

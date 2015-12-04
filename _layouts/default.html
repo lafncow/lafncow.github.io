@@ -4,6 +4,14 @@
     <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
 
     {% include meta.html %}
+    <!--Jekyll variables shared with Javascript-->
+    {% if page.abtests %}
+      <script type="text/javascript">
+        var abTests = {{ page.abtests }};
+      </script>
+    {% endif %}
+    <!-- scripts-->
+    <script src="/js/adamcornille.js"></script>
 
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
