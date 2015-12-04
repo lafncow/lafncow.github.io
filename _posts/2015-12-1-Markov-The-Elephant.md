@@ -4,7 +4,7 @@ title: Markov The Elephant
 abTests = [ subtitle ]
 ---
 
-{:id: .AB_subtitle_1}
+{:id: .ABsubtitle1}
 _A Quick Toy Problem_
 
 To kick off my blog, here is a fun little math problem that came to me recently.
