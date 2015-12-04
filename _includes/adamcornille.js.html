@@ -1,4 +1,13 @@
+<script type="text/javascript">
+
 // A/B Testing
+var abTests = [];
+{% if page.abtests %}
+    {% for abTest in page.abtests %}
+      abTests.push("{{ abTest }}");
+    {% endfor %}
+{% endif %}
+
 if( abTests ){
 	// setup variables
     console.log(abTests);
@@ -18,3 +27,5 @@ if( abTests ){
     	
     }
 }
+
+</script>

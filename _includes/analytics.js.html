@@ -8,7 +8,7 @@
 
 		ga('create', '{{ site.google_analytics }}', 'auto');
 		// If we're doing A/B testing, make sure we include the proper variables
-		if (abTests) {
+		if (abTests && abTests.length > 0) {
 			// push value with page-level scope, format: "test1,test2,test3 010"
 		    ga( 'set', 'dimension'+abTest_gaIndex, abTests.join(',')+' '+abTestVals.join('') );
 		}
