@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Markov The Elephant
-abTests = [ subtitle ]
+abTests: [ subtitle ]
 ---
 
-{: .absubtitle1}
+{: .ab-subtitle-1}
 _A Quick Toy Problem_
 
 To kick off my blog, here is a fun little math problem that came to me recently.

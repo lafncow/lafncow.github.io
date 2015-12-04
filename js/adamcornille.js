@@ -9,6 +9,6 @@ if( abTests ){
     for( i in abTests){
     	abTestVals[i] = (Math.random() < 0.5 ? 1 : 0);
     	// hide A/B alternative
-    	document.getElementsByClassName('AB_'+abTests[i]+'_'+(abTestVals[i]?0:1));
+    	document.getElementsByClassName('ab-'+abTests[i]+'-'+(abTestVals[i]?0:1));
     }
 }
