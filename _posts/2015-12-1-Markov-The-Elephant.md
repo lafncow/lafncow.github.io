@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Markov The Elephant
-abTests: [ subtitle ]
+abtests: [ subtitle ]
 ---
 
 {: .ab-subtitle-1}
