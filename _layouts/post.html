@@ -4,6 +4,15 @@ layout: default
 
 <article class="post">
   <h1>{{ page.title }}</h1>
+  {% if page.tags %}
+  <div class="tags">
+  	<ul>
+  	{% for tag in page.tags %}
+  		<li>#{{tag}}</li>
+  	{% endfor}
+  	</ul>
+  </div>
+  {% endif %}
 
   <div class="entry">
     {{ content }}
@@ -13,5 +22,15 @@ layout: default
     Written on {{ page.date | date: "%B %e, %Y" }}
   </div>
 
+  {% if page.references %}
+  <div class="references">
+  	<h3>References</h3>
+  	<ul>
+  	{% for reference in page.references %}
+  		<li><a href="http://{{reference}}" target="_blank">{{reference}}</a></li>
+  	{% endfor}
+  	</ul>
+  </div>
+  {% endif %}
   {% include disqus.html %}
 </article>
