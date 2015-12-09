@@ -30,6 +30,12 @@ body {
   width: 100%;
 }
 
+.tags li{
+  list-style-type:none;
+  display:inline;
+  color: #4183C4;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
   color: $darkerGray;

@@ -3,7 +3,6 @@ layout: post
 title: Markov The Elephant
 abtests: [ subtitle ]
 tags: [markovChains, toddlerStats]
-references: [xkcd.com, theoatmeal.com]
 ---
 
 {: .ab-subtitle-1}
