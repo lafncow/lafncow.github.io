@@ -27,6 +27,7 @@ The algorithm I have chosen is Exp3, which is short for Exponential-weight algor
 Let's make some code! Here are my functions in R for assigning weights to letters and deriving probabilities from those weights.
 
 ~~~r
+### Utility Functions ###
 # update the weight given to a choice, based on the reward for a trial
 updateWeight <- function(weight, probs, choice, reward, gamma=0.0){
   estimatedReward = reward / probs[choice]
@@ -55,7 +56,7 @@ choiceProbs = getProbabilities(choiceWeights, gamma)
 
 Each time I get new data, I can do the following to update my model. Note that I have coded my son's responses in the "Recognized" column, with 1 == recognized and 0 == not recognized. I can also assign scores in between, for example: 0.5 if he recognized the letter after being given a hint as to the sound it makes.
 
-~~~ r
+~~~r
 ### load data ###
 trials = read.csv('AlphabetTrials.csv')
 # names(trials) -> c('Letter', 'Recognized')
@@ -75,21 +76,21 @@ for( i in 1:numTrials ){
 ~~~
 
 When I want to choose another set of 5 letters to practice, I can simply run:
-~~~ r
+~~~r
 # get next 5 choices for future trials
 next5Choices = sample(choices,5,prob=choiceProbs)
 # c('U', 'A', 'Z', 'Y', 'F')
 ~~~
 
 This samples from the model's probability distribution of letters. After 72 trials, my distribution looks like this:
-~~~ r
+~~~r
 barplot(choiceProbs, names.arg = choices, col='skyblue')
 ~~~
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
 A, D, and U look like the letters we may need to work on most.
 
 I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 45% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
-~~~ r
+~~~r
 # optimal cumulative reward
 plot(1:numTrials, 1:numTrials, type='l', col='blue', lwd=3, xlab='Trials', ylab='Cumulative Reward')
 # expected random reward, assuming linear decline from 0.7 avg reward to 0.55
