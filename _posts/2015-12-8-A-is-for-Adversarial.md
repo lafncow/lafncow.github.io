@@ -9,7 +9,7 @@ references: [cseweb.ucsd.edu/~yfreund/papers/bandits.pdf, 1oclockbuzz.com/2015/1
 {: .ab-subtitle-1}
 _My son, the multi-armed bandit_
 
-Lately, my son has been very curious about words, so I have decided that it is a great time for us to practice letters. One way we practice is with flash cards. I like this method since it is easy to get ina few practice letters between other activities. The problem I am facing is how to choose which letters we practice. Ideally, I want to cover all letters over time, but focus on those he doesn't know and adapt as he learns them.
+Lately, my son has been very curious about words, so I have decided that it is a great time for us to practice letters. One way we practice is with flash cards. I like this method since it is easy to get in a few practice letters between other activities. The problem I am facing is how to choose which letters we practice. Ideally, I want to cover all letters over time, but focus on those he doesn't know and adapt as he learns them.
 
 ...enter the adversarial multi-armed bandit!
 <!--more-->
@@ -76,6 +76,7 @@ for( i in 1:numTrials ){
 ~~~
 
 When I want to choose another set of 5 letters to practice, I can simply run:
+
 ~~~r
 # get next 5 choices for future trials
 next5Choices = sample(choices,5,prob=choiceProbs)
@@ -83,13 +84,16 @@ next5Choices = sample(choices,5,prob=choiceProbs)
 ~~~
 
 This samples from the model's probability distribution of letters. After 72 trials, my distribution looks like this:
+
 ~~~r
 barplot(choiceProbs, names.arg = choices, col='skyblue')
 ~~~
+
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
 A, D, and U look like the letters we may need to work on most.
 
 I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 45% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
+
 ~~~r
 # optimal cumulative reward
 plot(1:numTrials, 1:numTrials, type='l', col='blue', lwd=3, xlab='Trials', ylab='Cumulative Reward')
@@ -98,6 +102,7 @@ lines(1:numTrials, cumsum((1:numTrials / numTrials)*0.55 + (1-(1:numTrials / num
 # actual reward
 lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=2, col='skyblue')
 ~~~
+
 ![Bandit Cumulative Reward]({{ site.url }}/images/cumulativeReward.png)
 
 As you can see, I am consistently beating the random model. The margin is not amazing, but keep in mind that this is truly an adversarial problem in the sense that each trial increases the odds that subsiquent trials with the same alternative will not pay off.
