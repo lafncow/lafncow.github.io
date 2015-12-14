@@ -30,10 +30,27 @@ body {
   width: 100%;
 }
 
-.tags li{
-  list-style-type:none;
-  display:inline;
+.tags li {
+  list-style-type: none;
+  display: inline;
   color: #4183C4;
+  padding: 2px 5px;
+  background:#fafafa;
+  border: #eee solid 1px;
+  border-radius:5px;
+}
+.tags ul{
+  margin:0;
+  padding:0;
+}
+article h1{
+  margin:0;
+  padding:0;
+}
+.read-time{
+  color:#999;
+  font-size: 12px;
+  margin: 3px;
 }
 
 h1, h2, h3, h4, h5, h6 {

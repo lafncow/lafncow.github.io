@@ -1,13 +1,9 @@
 ---
 layout: post
 title: A is for Adversarial
-abtests: [ subtitle ]
 tags: [abTesting, toddlerStats]
 references: [cseweb.ucsd.edu/~yfreund/papers/bandits.pdf, 1oclockbuzz.com/2015/11/24/bandit-algorithms-for-bullying-getting-more-lunch-money/, www.chrisstucchio.com/blog/2015/dont_use_bandits.html]
 ---
-
-{: .ab-subtitle-1 .abtest}
-_My son, the multi-armed bandit_
 
 Lately, my son has been very curious about words, so I have decided that it is a great time for us to practice letters. One way we practice is with flash cards. I like this method since it is easy to get in a few practice letters between other activities. The problem I am facing is how to choose which letters we practice. Ideally, I want to cover all letters over time, but focus on those he doesn't know and adapt as he learns them.
 
