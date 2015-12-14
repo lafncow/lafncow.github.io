@@ -6,7 +6,7 @@ tags: [abTesting, toddlerStats]
 references: [cseweb.ucsd.edu/~yfreund/papers/bandits.pdf, 1oclockbuzz.com/2015/11/24/bandit-algorithms-for-bullying-getting-more-lunch-money/, www.chrisstucchio.com/blog/2015/dont_use_bandits.html]
 ---
 
-{: .ab-subtitle-1}
+{: .ab-subtitle-1 .abtest}
 _My son, the multi-armed bandit_
 
 Lately, my son has been very curious about words, so I have decided that it is a great time for us to practice letters. One way we practice is with flash cards. I like this method since it is easy to get in a few practice letters between other activities. The problem I am facing is how to choose which letters we practice. Ideally, I want to cover all letters over time, but focus on those he doesn't know and adapt as he learns them.
@@ -15,11 +15,11 @@ Lately, my son has been very curious about words, so I have decided that it is a
 <!--more-->
 ![Multi-Armed Bandit]({{ site.url }}/images/stitch.jpg)
 
-Given an array of choices that can be repeated, bandit strategies seek to maximize rewards by learning from past choices. I can frame my problem in this way by seeing each letter as choice and my son's response as an outcome. Since I want to optimize towards letters he has not yet learned, I will "reward" the model when a letter is chosen that he does not recognize. An issue with this approach is that when my son responds by learning a new letter, my model will have a hard time un-learning to choose that letter. In fact, I expect a diminishing return as I repeat letters and he becomes more likely to recognize them. In this sense, my son's responses are "adversarial".
+Given an array of choices that can be repeated, bandit strategies seek to maximize rewards by learning from past choices. I can frame my problem in this way by seeing each letter as a choice and my son's response as an outcome. Since I want to optimize towards letters he has not yet learned, I will "reward" the model when a letter is chosen that he does not recognize. An issue with this approach is that when my son responds by learning a new letter, my model will have a hard time un-learning to choose that letter. In fact, I expect a diminishing return as I repeat letters and he becomes more likely to recognize them. In this sense, my son's responses are "adversarial".
 
 Besides being a great band name, an adversarial multi-armed bandit is designed to optimize choices over time, even when the mean reward for each choice is non-stationary. It does this by balancing randomness against learned probabilities that decay over time.
 
-The algorithm I have chosen is Exp3, which is short for Exponential-weight algorithm for Exploration and Exploitation. In terms of my situation:
+The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/bandits.pdf){:target="_blank"}, which is short for Exponential-weight algorithm for Exploration and Exploitation. In terms of my situation:
 
  - **Exploration** - randomly choosing letters to determine my son's knowledge of the alphabet (also has the up-side of occassionally reinforcing letters he already knows)
  - **Exploitation** - preferring letters that he has not done well on in the past
@@ -105,4 +105,6 @@ lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=2, col='skyblue')
 
 ![Bandit Cumulative Reward]({{ site.url }}/images/cumulativeReward.png)
 
-As you can see, I am consistently beating the random model. The margin is not amazing, but keep in mind that this is truly an adversarial problem in the sense that each trial increases the odds that subsiquent trials with the same alternative will not pay off.
+As you can see, Exp3 is consistently beating the random model. The margin is not amazing, but keep in mind that this is truly an adversarial problem where each trial increases the odds that subsequent trials with the same alternative will not pay off. Due to that, the random model would likely perform more poorly than estimated here.
+
+The professional educational value of this method is debatable (I am not a teacher!), but I had some fun and I think my son and I both learned a lot.
