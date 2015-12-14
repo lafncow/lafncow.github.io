@@ -1,12 +1,8 @@
 ---
 layout: post
 title: Markov The Elephant
-abtests: [ subtitle ]
 tags: [markovChains, toddlerStats]
 ---
-
-{: .ab-subtitle-1}
-_A Quick Toy Problem_
 
 To kick off my blog, here is a fun little math problem that came to me recently.
 
