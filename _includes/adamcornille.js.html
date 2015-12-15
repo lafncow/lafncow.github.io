@@ -26,6 +26,7 @@ if( abTests ){
     }
 }
 
+filterArticlesByHashtag = function(){
 // hashtags
 if( location.hash !== "" && location.pathname == '/'){
     // viewing a hashtag filtered page (only enabled for home page)
@@ -42,5 +43,8 @@ if( location.hash !== "" && location.pathname == '/'){
         }
     }
 }
+return false;
+}
+filterArticlesByHashtag();
 
 </script>
