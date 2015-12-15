@@ -29,8 +29,10 @@ if( abTests ){
 // hashtags
 if( location.hash !== "" && location.pathname == '/'){
     // viewing a hashtag filtered page (only enabled for home page)
-    var articles = document.getElementsByTagName('article');
-    for( var article in articles ){
+    var article,
+        articles = document.getElementsByTagName('article');
+    for( var i=0, ii=articles.length; i<ii; i++ ){
+        article = articles[i];
         if( article.querySelector('.tag-'+location.hash.substr(1)) !== null ){
             // this article matches
             article.style.display = '';
