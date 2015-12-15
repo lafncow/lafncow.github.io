@@ -9,4 +9,4 @@ I grew up in the Midwest and studied in beautiful Madison, WI, where I developed
 I am now a data science manager for Deloitte Digital's Social Intelligence practice. I endeavor to provide a holistic perspective to data though my background in statistics, development, and graphic design. I am passionate about transforming data into understanding in a way that excites and enriches.
 
 
-[diggity@adamcornille.com](mailto:diggity@adamcornille.com)
+[diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
