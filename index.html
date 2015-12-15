@@ -11,7 +11,7 @@ layout: default
 	  <div class="tags">
 	    <ul>
 	    {% for tag in post.tags %}
-	      <li><a class="tag-{{tag}}" href="{{ site.baseurl }}/#{{tag}}" onclick="function(){location.hash={{tag}};return false;}">#{{tag}}</a></li>
+	      <li><a class="tag-{{tag}}" href="{{ site.baseurl }}/#{{tag}}" onclick="location.hash={{tag}};return false;">#{{tag}}</a></li>
 	    {% endfor %}
 	    </ul>
 	  </div>

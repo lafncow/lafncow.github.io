@@ -10,7 +10,6 @@ var abTests = [];
 
 if( abTests ){
 	// setup variables
-    console.log(abTests);
     var abTestVals = [];
     var abTest_gaIndex = 1;
     var hiddenSet = [];
@@ -18,13 +17,27 @@ if( abTests ){
     // loop through active tests
     for( var i=0, ii=abTests.length;i<ii;i++ ){
     	abTestVals[i] = (Math.random() < 0.5 ? 1 : 0);
-        console.log('ab-'+abTests[i]+'-'+(abTestVals[i]?0:1));
     	// hide A/B alternative
         hiddenSet = document.getElementsByClassName('ab-'+abTests[i]+'-'+(abTestVals[i]?0:1));
         for( var j=0, jj=hiddenSet.length;j<jj;j++ ){
             hiddenSet[j].style.display = 'none';
         }
     	
+    }
+}
+
+// hashtags
+if( location.hash !== "" && location.pathname == '/'){
+    // viewing a hashtag filtered page (only enabled for home page)
+    var articles = document.getElementsByTagName('article');
+    for( var article in articles ){
+        if( article.querySelector('.tag-'+location.hash.substr(1)) !== null ){
+            // this article matches
+            article.style.display = '';
+        }else{
+            // this one doesn't, hide it
+            article.style.display = 'none';
+        }
     }
 }
 
