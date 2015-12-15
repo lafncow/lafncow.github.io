@@ -22,7 +22,7 @@ The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/ban
 
 Let's make some code! Here are my functions in R for assigning weights to letters and deriving probabilities from those weights.
 
-~~~r
+{% highlight r %}
 ### Utility Functions ###
 # update the weight given to a choice, based on the reward for a trial
 updateWeight <- function(weight, probs, choice, reward, gamma=0.0){
@@ -34,11 +34,11 @@ updateWeight <- function(weight, probs, choice, reward, gamma=0.0){
 getProbabilities <- function(weights, gamma=0.0){
   (1.0 - gamma) * (weights / sum(weights)) + (gamma / length(weights))
 }
-~~~
+{% endhighlight %}
 
 Now to set up the problem and initialize my parameters. The gamma parameter is a tuning parameter for Exp3 that provides theorical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
 
-~~~r
+{% highlight r %}
 # choices = alphabet
 choices = unlist(strsplit('ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''))
 # upper bound on cumulative reward over convergence time horizon (assuming 1,000 trials)
@@ -48,11 +48,11 @@ gamma = min(1, sqrt((length(choices) * log(length(choices))) / ((exp(1) - 1) * u
 # initialize weights
 choiceWeights = rep(1, length(choices))
 choiceProbs = getProbabilities(choiceWeights, gamma)
-~~~
+{% endhighlight %}
 
 Each time I get new data, I can do the following to update my model. Note that I have coded my son's responses in the "Recognized" column, with 1 == recognized and 0 == not recognized. I can also assign scores in between, for example: 0.5 if he recognized the letter after being given a hint as to the sound it makes.
 
-~~~r
+{% highlight r %}
 ### load data ###
 trials = read.csv('AlphabetTrials.csv')
 # names(trials) -> c('Letter', 'Recognized')
@@ -69,21 +69,21 @@ for( i in 1:numTrials ){
   # get associated probabilities
   choiceProbs = getProbabilities(choiceWeights, gamma)
 }
-~~~
+{% endhighlight %}
 
 When I want to choose another set of 5 letters to practice, I can simply run:
 
-~~~r
+{% highlight r %}
 # get next 5 choices for future trials
 next5Choices = sample(choices,5,prob=choiceProbs)
 # c('U', 'A', 'Z', 'Y', 'F')
-~~~
+{% endhighlight %}
 
 This samples from the model's probability distribution of letters. After 72 trials, my distribution looks like this:
 
-~~~r
+{% highlight r %}
 barplot(choiceProbs, names.arg = choices, col='skyblue')
-~~~
+{% endhighlight %}
 
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
 A, D, and U look like the letters we may need to work on most.
