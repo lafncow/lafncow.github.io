@@ -90,14 +90,14 @@ A, D, and U look like the letters we may need to work on most.
 
 I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 45% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
 
-~~~r
+{% highlight r %}
 # optimal cumulative reward
 plot(1:numTrials, 1:numTrials, type='l', col='blue', lwd=3, xlab='Trials', ylab='Cumulative Reward')
 # expected random reward, assuming linear decline from 0.7 avg reward to 0.55
 lines(1:numTrials, cumsum((1:numTrials / numTrials)*0.55 + (1-(1:numTrials / numTrials))*0.7), lwd=2, col='darkorange')
 # actual reward
 lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=2, col='skyblue')
-~~~
+{% endhighlight %}
 
 ![Bandit Cumulative Reward]({{ site.url }}/images/cumulativeReward.png)
 
