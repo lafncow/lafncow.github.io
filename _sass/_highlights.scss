@@ -4,7 +4,7 @@
   padding: 10px 7px 10px 18px;
   margin: 20px 0 20px 0;
   overflow-x: scroll;
-  $lightGray: #eee;
+  color: $lightGray;
   border-radius: 5px
 }
 
@@ -44,7 +44,7 @@ code {
 .highlight .kt { color: $orange; font-weight: bold } /* Keyword.Type */
 .highlight .ld { color: $lightGray } /* Literal.Date */
 .highlight .m { color: $lightBlue } /* Literal.Number */
-.highlight .s { color: $lightBlue } /* Literal.String */
+.highlight .s { color: $green } /* Literal.String */
 .highlight .na { color: $lightGray } /* Name.Attribute */
 .highlight .nb { color: $ocean } /* Name.Builtin */
 .highlight .nc { color: $reddish; text-decoration: underline } /* Name.Class */
