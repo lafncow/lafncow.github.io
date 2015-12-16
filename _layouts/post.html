@@ -16,7 +16,7 @@ layout: default
   {% endif %}
 
   <div class="read-time">
-    {{ page.content | number_of_words | divided_by: 200 | append: " minute read" }}
+    {{ content | number_of_words | divided_by: 200 | append: " minute read" }}
   </div>
 
   <div class="entry">
