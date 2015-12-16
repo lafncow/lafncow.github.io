@@ -54,7 +54,7 @@ article h1{
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $centurygoth;
-  color: $darkerGray;
+  color: $darkGray;
   font-weight: bold;
 
   line-height: 1.7;
@@ -216,7 +216,7 @@ img {
   margin: 0;
   color: $darkGray;
   cursor: pointer;
-  font-family: $helveticaNeue;
+  font-family: $centurygoth;
   font-weight: 300;
   font-size: 28px;
   letter-spacing: 1px;
@@ -225,7 +225,7 @@ img {
 .site-description {
   margin: -5px 0 0 0;
   color: $gray;
-  font-size: 16px;
+  font-size: 15px;
 
   @include mobile {
     margin: 3px 0;
@@ -235,7 +235,7 @@ img {
 nav {
   float: right;
   margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $helveticaNeue;
+  font-family: $centurygoth;
   font-size: 18px;
 
   @include mobile {
