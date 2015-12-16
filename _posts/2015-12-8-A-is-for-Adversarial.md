@@ -82,21 +82,38 @@ next5Choices = sample(choices,5,prob=choiceProbs)
 This samples from the model's probability distribution of letters. After 72 trials, my distribution looks like this:
 
 {% highlight r %}
-barplot(choiceProbs, names.arg = choices, col='skyblue')
+# formatting
+par(lty=0)
+par(mar=c(3,4,1,1))
+# final probabilities
+barplot(choiceProbs, names.arg = choices, col=myHeatColorRamp(5)[ceiling(choiceProbs*100)-2], ylab='Probability',space=0)
+par(lty='solid')
+# grid lines
+abline(h=seq(0.01, 0.06, 0.01), col=rgb(1, 1, 1, alpha=0.3), lwd=2,lty='solid')
 {% endhighlight %}
 
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
-A, D, and U look like the letters we may need to work on most.
+It looks like 'X', 'D', and 'C' are letters we may need to practice.
 
 I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 45% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
 
 {% highlight r %}
 # optimal cumulative reward
-plot(1:numTrials, 1:numTrials, type='l', col='blue', lwd=3, xlab='Trials', ylab='Cumulative Reward')
-# expected random reward, assuming linear decline from 0.7 avg reward to 0.55
-lines(1:numTrials, cumsum((1:numTrials / numTrials)*0.55 + (1-(1:numTrials / numTrials))*0.7), lwd=2, col='darkorange')
+plot(1:numTrials, 1:numTrials, type='l', col=myColors[11], lwd=3, bty='n',xlab='Trials', ylab='Cumulative Reward')
+# grid lines
+abline(h=seq(0,100,20), col=rgb(0.6, 0.6, 0.6, alpha=0.3), lty='solid')
+abline(v=seq(0,100,20), col=rgb(0.6, 0.6, 0.6, alpha=0.3), lty='solid')
+# expected random reward, assuming linear decline from 0.7 avg reward to 0.52
+expectedRandom = cumsum((1:numTrials / numTrials)*0.52 + (1-(1:numTrials / numTrials))*0.7)
+# difference between actual and expected
+polygon(c(1:numTrials,rev(1:numTrials)), c(cumsum(1 - trials$Recognized),rev(expectedRandom)),col=myColors[1])
+lines(1:numTrials, expectedRandom, lwd=3, col=myColors[4])
 # actual reward
-lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=2, col='skyblue')
+lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=3, col=myColors[3])
+# labels
+text(46, 54, labels='Optimal', cex=1.2, col=myColors[11])
+text(53, 43, labels='Actual', cex=1.2, col=myColors[3])
+text(67, 36, labels='Random', cex=1.2, col=myColors[4])
 {% endhighlight %}
 
 ![Bandit Cumulative Reward]({{ site.url }}/images/cumulativeReward.png)
