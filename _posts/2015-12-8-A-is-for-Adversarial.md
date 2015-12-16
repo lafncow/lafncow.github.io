@@ -15,7 +15,7 @@ Given an array of choices that can be repeated, bandit strategies seek to maximi
 
 Besides being a great band name, an adversarial multi-armed bandit is designed to optimize choices over time, even when the mean reward for each choice is non-stationary. It does this by balancing randomness against learned probabilities that decay over time.
 
-The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/bandits.pdf){:target="_blank"}, which is short for Exponential-weight algorithm for Exploration and Exploitation. In terms of my situation:
+The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/bandits.pdf){:target="_blank"}, which is short for _Exponential-weight algorithm for Exploration and Exploitation_. In terms of my situation:
 
  - **Exploration** - randomly choosing letters to determine my son's knowledge of the alphabet (also has the up-side of occassionally reinforcing letters he already knows)
  - **Exploitation** - preferring letters that he has not done well on in the past
