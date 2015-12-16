@@ -25,18 +25,18 @@ Let's make some code! Here are my functions in R for assigning weights to letter
 {% highlight r %}
 ### Utility Functions ###
 # update the weight given to a choice, based on the reward for a trial
-updateWeight <- function(weight, probs, choice, reward, gamma=0.0){
+updateWeight <- function(weight, probs, choice, reward, g=0.0){
   estimatedReward = reward / probs[choice]
-  weight * exp(estimatedReward * gamma / length(probs))
+  weight * exp(estimatedReward * g / length(probs))
 }
 
 # create a probability vector from the vector of weights
-getProbabilities <- function(weights, gamma=0.0){
-  (1.0 - gamma) * (weights / sum(weights)) + (gamma / length(weights))
+getProbabilities <- function(weights, g=0.0){
+  (1.0 - g) * (weights / sum(weights)) + (g / length(weights))
 }
 {% endhighlight %}
 
-Now to set up the problem and initialize my parameters. The gamma parameter is a tuning parameter for Exp3 that provides theorical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
+Now to set up the problem and initialize my parameters. The g (gamma) parameter is a tuning parameter for Exp3 that provides theorical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
 
 {% highlight r %}
 # choices = alphabet
@@ -44,10 +44,10 @@ choices = unlist(strsplit('ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''))
 # upper bound on cumulative reward over convergence time horizon (assuming 1,000 trials)
 upperBoundEstimate = 1000
 # set gamma parameter
-gamma = min(1, sqrt((length(choices) * log(length(choices))) / ((exp(1) - 1) * upperBoundEstimate)))
+g = min(1, sqrt((length(choices) * log(length(choices))) / ((exp(1) - 1) * upperBoundEstimate)))
 # initialize weights
 choiceWeights = rep(1, length(choices))
-choiceProbs = getProbabilities(choiceWeights, gamma)
+choiceProbs = getProbabilities(choiceWeights, g)
 {% endhighlight %}
 
 Each time I get new data, I can do the following to update my model. Note that I have coded my son's responses in the "Recognized" column, with 1 == recognized and 0 == not recognized. I can also assign scores in between, for example: 0.5 if he recognized the letter after being given a hint as to the sound it makes.
@@ -65,9 +65,9 @@ for( i in 1:numTrials ){
   # reward == finding a letter that is not recognized
   reward = 1 - trials$Recognized[i]
   # update weights
-  choiceWeights[choice] = updateWeight(choiceWeights, choiceProbs, choice, reward, gamma)
+  choiceWeights[choice] = updateWeight(choiceWeights, choiceProbs, choice, reward, g)
   # get associated probabilities
-  choiceProbs = getProbabilities(choiceWeights, gamma)
+  choiceProbs = getProbabilities(choiceWeights, g)
 }
 {% endhighlight %}
 
