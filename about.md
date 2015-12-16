@@ -10,3 +10,5 @@ I am now a data science manager for Deloitte Digital's Social Intelligence pract
 
 
 [diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
+
+![Me]({{ site.url }}/images/AdamCornille_Circle_sm.png)
