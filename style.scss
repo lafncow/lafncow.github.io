@@ -217,6 +217,7 @@ img {
   font-weight: bold;
   font-size: 23px;
   display: inline;
+  line-height: 1;
 }
 
 .site-description {
@@ -233,7 +234,7 @@ img {
 
 nav {
   float: right;
-  margin-top: 12px; // @TODO: Vertically middle align
+  margin-top: 5px; // @TODO: Vertically middle align
   font-family: $centurygoth;
   font-size: 15px;
 
