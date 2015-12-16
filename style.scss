@@ -33,10 +33,9 @@ body {
 .tags li {
   list-style-type: none;
   display: inline;
-  color: #4183C4;
   padding: 2px 5px;
-  background:#fafafa;
-  border: #eee solid 1px;
+  background: #fafafa;
+  border: $lightGray solid 1px;
   border-radius:5px;
 }
 .tags ul{
@@ -48,13 +47,13 @@ article h1{
   padding:0;
 }
 .read-time{
-  color:#999;
+  color: $gray;
   font-size: 12px;
   margin: 3px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $helveticaNeue;
+  font-family: $centurygoth;
   color: $darkerGray;
   font-weight: bold;
 
@@ -92,11 +91,11 @@ p {
 }
 
 a {
-  color: $blue;
+  color: $ocean;
   text-decoration: none;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: $lightBlue;
   }
 }
 
@@ -255,7 +254,7 @@ nav {
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: $ocean;
     }
   }
 }
@@ -277,7 +276,7 @@ nav {
 .post {
   blockquote {
     margin: 1.8em .8em;
-    border-left: 2px solid $gray;
+    border-left: 2px solid $reddish;
     padding: 0.1em 1em;
     color: $gray;
     font-size: 22px;
@@ -296,8 +295,8 @@ nav {
 
 .wrapper-footer {
   margin-top: 20px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid $lightGray;
+  border-bottom: 1px solid $lightGray;
   background-color: $lightGray;
 }
 
