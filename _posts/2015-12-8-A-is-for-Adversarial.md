@@ -95,7 +95,7 @@ abline(h=seq(0.01, 0.06, 0.01), col=rgb(1, 1, 1, alpha=0.3), lwd=2,lty='solid')
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
 It looks like 'X', 'D', and 'C' are letters we may need to practice.
 
-I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 45% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
+I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 48% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
 
 {% highlight r %}
 # optimal cumulative reward
