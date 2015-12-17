@@ -12,6 +12,10 @@ Assuming that complimentary spices tend to be used together, and that dishes wit
 
 First, the data. I found a free API for recipes that could be queried by ingredient (unfortunately the API has since been discontinued). I wrote a quick library for the API endpoints in Python. Then I wrote a script to walk through a list of 19 common spices and collect recipes as fast as the rate limit allowed. After a week, I walked away with 63k recipes.
 
+![Buttered Orange with Lettuce]({{ site.url }}/images/ButteredOrangeWithLettuce.PNG)
+
+> Buttered Orange with Lettuce -- An inspired dish from my daughter, but not represented in my data
+
 My data contains an average rating and a number of reviews per recipe. The number of reviews follows an exponential distribution, with most recipes having few, if any reviews, but a handful snowball to hundreds of reviews. I would like to use the number of reviews to weight the recipes and their ratings. However, I don't consider a recipe with 200 reviews to be 200 times as important. To compensate, I am log-scaling the review counts.
 
 {% highlight r %}
