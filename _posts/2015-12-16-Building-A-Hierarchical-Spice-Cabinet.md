@@ -14,7 +14,8 @@ First, the data. I found a free API for recipes that could be queried by ingredi
 
 ![Buttered Orange with Lettuce]({{ site.url }}/images/ButteredOrangeWithLettuce.PNG)
 
-> Buttered Orange with Lettuce -- An inspired dish from my daughter, but not represented in my data
+* > *Buttered Orange with Lettuce*
+  > An inspired dish from my daughter, but not represented in my data
 
 My data contains an average rating and a number of reviews per recipe. The number of reviews follows an exponential distribution, with most recipes having few, if any reviews, but a handful snowball to hundreds of reviews. I would like to use the number of reviews to weight the recipes and their ratings. However, I don't consider a recipe with 200 reviews to be 200 times as important. To compensate, I am log-scaling the review counts.
 
@@ -72,7 +73,7 @@ rect.hclust(spicesHclust, k = 6, border=myColors)
 
 Voila! I have some pretty intuitive clusters here:
 
-1. Sweet spices (allspice, cinnamon, nutmeg)
+1. <b style="color:#ED9E21">Sweet spices</b> (allspice, cinnamon, nutmeg)
 2. Garnish herbs (basil, oregano)
 3. Hot spices (paprika, cayenne, cumin)
 4. Specialty spices (coriander, mint, saffron, turmeric, cardamom)
@@ -92,3 +93,6 @@ text(spicePCA$x[1:numSpices],spicePCA$x[(1:numSpices)+numSpices]-0.02, colnames(
 ![Spices K-Means]({{ site.url }}/images/spiceKmeans.png)
 
 Given a K of 6, k-means develops exactly the same grouping! PCA does reveal some similarity between the herb, French, and specialty clusters.
+
+> He who controls the Spice, controls the universe!
+> > Baron Harkonnen
