@@ -17,7 +17,7 @@ Besides being a great band name, an adversarial multi-armed bandit is designed t
 
 The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/bandits.pdf){:target="_blank"}, which is short for _Exponential-weight algorithm for Exploration and Exploitation_. In terms of my situation:
 
- - **Exploration** - randomly choosing letters to determine my son's knowledge of the alphabet (also has the up-side of occassionally reinforcing letters he already knows)
+ - **Exploration** - randomly choosing letters to determine my son's knowledge of the alphabet (also has the up-side of occasionally reinforcing letters he already knows)
  - **Exploitation** - preferring letters that he has not done well on in the past
 
 Let's make some code! Here are my functions in R for assigning weights to letters and deriving probabilities from those weights.
@@ -36,7 +36,7 @@ getProbabilities <- function(weights, g=0.0){
 }
 {% endhighlight %}
 
-Now to set up the problem and initialize my parameters. The g (gamma) parameter is a tuning parameter for Exp3 that provides theorical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
+Now to set up the problem and initialize my parameters. The g (gamma) parameter is a tuning parameter for Exp3 that provides theoretical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
 
 {% highlight r %}
 # choices = alphabet

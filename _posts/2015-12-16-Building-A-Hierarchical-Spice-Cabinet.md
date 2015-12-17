@@ -71,7 +71,7 @@ Voila! I have some pretty intuitive clusters here:
 1. Sweet spices (allspice, cinnamon, nutmeg)
 2. Garnish herbs (basil, oregano)
 3. Hot spices (paprika, cayenne, cumin)
-4. Specialty spices (corriander, mint, saffron, turmeric, cardamom)
+4. Specialty spices (coriander, mint, saffron, turmeric, cardamom)
 5. French spices (mustard, tarragon)
 6. Herbs (rosemary, marjoram, sage, thyme)
 

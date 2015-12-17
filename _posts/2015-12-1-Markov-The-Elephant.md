@@ -14,7 +14,7 @@ Last year my kids got an elephant toy which tossed balls in the air while playin
 
 While trying to block out the penetrating music, I started to wonder about the odds of cycling a given number of times. Since the toy comes with 5 balls, how likely is it for it to cycle 20 times?
 
-To answer this, I created an R script that takens a given number of starting balls, a success probability, and a number of trials (a trial being a full cycle of all remaining balls). It then generates a transition matrix to all possible states (numbers of remaining balls) and applies the matrix to the starting state for each trial. I output the results as a heat map of probabilities of remaining balls per trial. For example, for 5 balls, looks like this:
+To answer this, I created an R script that takes a given number of starting balls, a success probability, and a number of trials (a trial being a full cycle of all remaining balls). It then generates a transition matrix to all possible states (numbers of remaining balls) and applies the matrix to the starting state for each trial. I output the results as a heat map of probabilities of remaining balls per trial. For example, for 5 balls, looks like this:
 ![Elephant State Probabilities]({{ site.url }}/images/elephantToyResults1.PNG)  
 There is a greater than 99.9% probability that it will not go to 20 cycles. Whew!
 
