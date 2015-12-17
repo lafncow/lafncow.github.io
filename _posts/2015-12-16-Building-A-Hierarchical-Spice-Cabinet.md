@@ -4,7 +4,7 @@ title: Building a Hierarchical Spice Cabinet
 tags: [clustering, cooking]
 ---
 
-I love to cook, often without a recipe, and during those times I find myself wanting to assemble a quick melange of complimentary spices to apply to my dish. How can I arrange my spice cabinet so that spices that play well together are near each other?
+I love to cook, often without a recipe, and during those times I find myself wanting to assemble a quick melange of complimentary spices to apply to my dish. How can I arrange my spice cabinet so spices that play well together are near each other?
 
 Assuming that complimentary spices tend to be used together, and that dishes with complimentary spices are well reviewed, recipe review data should be able to help me sort my cabinet.
 
@@ -87,4 +87,4 @@ text(spicePCA$x[1:numSpices],spicePCA$x[(1:numSpices)+numSpices]-0.02, colnames(
 
 ![Spices K-Means]({{ site.url }}/images/spiceKmeans.png)
 
-Given a K of 6, k-means develops exactly the same grouping! It does reveals some similarity between the herb, French, and specialty clusters.
+Given a K of 6, k-means develops exactly the same grouping! PCA does reveal some similarity between the herb, French, and specialty clusters.
