@@ -22,6 +22,7 @@ hist(log(fullData$ReviewCount+1, maxReviews), col=myHeatColorRamp(12),main='',yl
 ![Log-scaled Reviews]({{ site.url }}/images/spiceReviewHist.png)
 
 The ratings are on a 5-star scale. I am adjusting the scale in two ways:
+
 1. Giving a rating to all un-reviewed recipes equal to the mean of my reviewed recipes
 2. Centering the scale on 2.5 stars, so scores above that count towards a spice pairing and scores below count against a pairing
 
@@ -66,6 +67,7 @@ rect.hclust(spicesHclust, k = 6, border=myColors)
 ![Spices Hierarchy]({{ site.url }}/images/spiceHclust.png)
 
 Voila! I have some pretty intuitive clusters here:
+
 1. Sweet spices (allspice, cinnamon, nutmeg)
 2. Garnish herbs (basil, oregano)
 3. Hot spices (paprika, cayenne, cumin)
