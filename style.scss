@@ -23,6 +23,22 @@ body {
   color: $darkGray;
 }
 
+div#references {
+  background: #EFEFEF;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid $lightGray;
+  margin-top: 15px;
+}
+
+div#references h3 {
+  color: $lightGray;
+}
+
+div#references ul, div#references ul {
+  margin: 5px 0;
+}
+
 .container {
   margin: 0 auto;
   max-width: 740px;
