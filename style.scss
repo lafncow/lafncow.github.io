@@ -42,6 +42,12 @@ body {
   margin:0;
   padding:0;
 }
+
+.noMargin{
+  margin: 0;
+  padding: 0;
+}
+
 article h1{
   margin:0;
   padding:0;
@@ -78,7 +84,9 @@ h2 {
 }
 
 h3 {
-  font-size: 20px;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 h4 {
@@ -279,16 +287,32 @@ nav {
     color: $darkGray;
     font-size: 22px;
     font-style: italic;
+    background: #EFEFEF;
   }
 
-  blockquote blockquote{
+  blockquote blockquote {
     margin: 0;
     border: none;
     padding: 0;
     color: $gray;
-    font-size: 16px;
+    font-size: 14px;
     text-align: right;
     font-style: normal;
+  }
+
+  h3 blockquote {
+    border-left: 2px solid $green;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 0 1em;
+    color: $darkGray;
+  }
+
+  h3 blockquote p {
+    padding: 0;
+    margin: 0;
   }
 
   .comments {
