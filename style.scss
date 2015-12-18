@@ -300,19 +300,18 @@ nav {
     font-style: normal;
   }
 
-  blockquote .caption{
-    border-left: 2px solid $green;
+  blockquote.caption {
+    border-left: 2px solid #BADA55;
     margin: 0;
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
-    padding: 0 1em;
-    color: $darkGray;
+    padding: 5px 10px;
+    color: #404040;
   }
-
-  blockquote .caption p {
-    padding: 0;
-    margin: 0;
+  blockquote.caption p{
+    margin:0;
+    padding:0;
   }
 
   .comments {
