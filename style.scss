@@ -300,7 +300,7 @@ nav {
     font-style: normal;
   }
 
-  h3 blockquote {
+  blockquote .caption{
     border-left: 2px solid $green;
     margin: 0;
     font-size: 14px;
@@ -310,7 +310,7 @@ nav {
     color: $darkGray;
   }
 
-  h3 blockquote p {
+  blockquote .caption p {
     padding: 0;
     margin: 0;
   }

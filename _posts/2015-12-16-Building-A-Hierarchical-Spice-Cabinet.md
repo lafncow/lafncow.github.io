@@ -15,8 +15,8 @@ First, the data. I found a free API for recipes that could be queried by ingredi
 ![Buttered Orange with Lettuce]({{ site.url }}/images/ButteredOrangeWithLettuce.PNG)
 {: .noMargin}
 
-### > **Buttered Orange with Lettuce**
-  > An inspired dish from my daughter, but not represented in my data
+> **Buttered Orange with Lettuce** An inspired dish from my daughter, but not represented in my data
+{: .caption}
 
 My data contains an average rating and a number of reviews per recipe. The number of reviews follows an exponential distribution, with most recipes having few, if any reviews, but a handful snowball to hundreds of reviews. I would like to use the number of reviews to weight the recipes and their ratings. However, I don't consider a recipe with 200 reviews to be 200 times as important. To compensate, I am log-scaling the review counts.
 
