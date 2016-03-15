@@ -20,10 +20,10 @@ First, the data. I found a free API for recipes that could be queried by ingredi
 
 My data contains an average rating and a number of reviews per recipe. The number of reviews follows an exponential distribution, with most recipes having few, if any reviews, but a handful snowball to hundreds of reviews. I would like to use the number of reviews to weight the recipes and their ratings. However, I don't consider a recipe with 200 reviews to be 200 times as important. To compensate, I am log-scaling the review counts.
 
-{% highlight r %}
+```R
 hist(fullData$ReviewCount, col=myHeatColorRamp(12),main='',ylab='Review Count',xlab='')
 hist(log(fullData$ReviewCount+1, maxReviews), col=myHeatColorRamp(12),main='',ylab='log( Review Count )',xlab='')
-{% endhighlight %}
+```
 
 ![Log-scaled Reviews]({{ site.url }}/images/spiceReviewHist.png)
 
@@ -32,7 +32,7 @@ The ratings are on a 5-star scale. I am adjusting the scale in two ways:
 1. Giving a rating to all un-reviewed recipes equal to the mean of my reviewed recipes
 2. Centering the scale on 2.5 stars, so scores above that count towards a spice pairing and scores below count against a pairing
 
-{% highlight r %}
+```R
 maxRating = max(fullData$StarRating)
 maxReviews = max(fullData$ReviewCount)
 fullData$Rating <- fullData$StarRating
@@ -40,11 +40,11 @@ fullData$Rating <- fullData$StarRating
 fullData$Rating[fullData$ReviewCount<1] <- mean(fullData$StarRating[fullData$ReviewCount>0])
 # create weighted scores from zero-centered ratings and log-scaled number of reviews
 fullData$weightedRating = (fullData$Rating-2.5) * log(fullData$ReviewCount+1.1, maxReviews)
-{% endhighlight %}
+```
 
 Now that my scores are adjusted, I need to re-shape my data. I collected my recipes one ingredient at a time and the API only returns the recipe IDs, not full lists of ingredients. To reach a workable data set I need to create columns for each spice and group by recipe IDs.
 
-{% highlight r %}
+```R
 # create columns for each spice
 for(spice in spiceList){
   # weighted score if ingredient was used, otherwise zero
@@ -53,11 +53,11 @@ for(spice in spiceList){
 
 # create spices vs recipes weighted score matrix
 recipeMatrix = aggregate(fullData[,spiceList],by=list('recipeID'=fullData$RecipeID),max)
-{% endhighlight %}
+```
 
 Finally, I can find the correlation between my spices, based on weighted recipe ratings, and generate a hierarchical clustering.
 
-{% highlight r %}
+```R
 # create spices correlation matrix
 spiceCor = cor(recipeMatrix[,spiceList] )
 
@@ -68,7 +68,7 @@ spicesHclust = hclust(dist(spiceCor))
 plot(spicesHclust)
 # cut into 6 pieces
 rect.hclust(spicesHclust, k = 6, border=myColors)
-{% endhighlight %}
+```
 
 ![Spices Hierarchy]({{ site.url }}/images/spiceHclust.png)
 
@@ -83,13 +83,13 @@ Voila! I have some pretty intuitive clusters here:
 
 I like to give k-means a shot at the problem to validate my results. I will visualize k-means with PCA.
 
-{% highlight r %}
+```R
 spiceKmeans = kmeans(spiceCor,6,nstart=10)
 # display results, using PCA to compress dimensions
 spicePCA = prcomp(spiceCor)
 plot(spicePCA$x[1:numSpices],spicePCA$x[(1:numSpices)+numSpices],pch=19,col=myColors[spiceKmeans$cluster], cex=5, lwd=5, xlab="First Principle Component", ylab="Second Principle Component")
 text(spicePCA$x[1:numSpices],spicePCA$x[(1:numSpices)+numSpices]-0.02, colnames(spiceCor))
-{% endhighlight %}
+```
 
 ![Spices K-Means]({{ site.url }}/images/spiceKmeans.png)
 
