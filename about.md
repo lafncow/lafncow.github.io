@@ -13,4 +13,5 @@ My career path has led me from design to development to statistics. I am able to
 I enjoy cooking, science fiction, traveling, brewing beer, hacking, motorcycles, hiking, and my beautiful family.
 
 [diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
+
 <a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">My Resume [pdf]</a>

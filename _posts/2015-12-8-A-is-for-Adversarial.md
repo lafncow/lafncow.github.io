@@ -22,7 +22,7 @@ The algorithm I have chosen is [Exp3](http://cseweb.ucsd.edu/~yfreund/papers/ban
 
 Let's make some code! Here are my functions in R for assigning weights to letters and deriving probabilities from those weights.
 
-{% highlight r %}
+```R
 ### Utility Functions ###
 # update the weight given to a choice, based on the reward for a trial
 updateWeight <- function(weight, probs, choice, reward, g=0.0){
@@ -34,11 +34,11 @@ updateWeight <- function(weight, probs, choice, reward, g=0.0){
 getProbabilities <- function(weights, g=0.0){
   (1.0 - g) * (weights / sum(weights)) + (g / length(weights))
 }
-{% endhighlight %}
+```
 
 Now to set up the problem and initialize my parameters. The g (gamma) parameter is a tuning parameter for Exp3 that provides theoretical limits to regret (the difference between optimal performance and actual performance). It does this by controlling the balance between exploration and exploitation as described above.
 
-{% highlight r %}
+```R
 # choices = alphabet
 choices = unlist(strsplit('ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''))
 # upper bound on cumulative reward over convergence time horizon (assuming 1,000 trials)
@@ -48,11 +48,11 @@ g = min(1, sqrt((length(choices) * log(length(choices))) / ((exp(1) - 1) * upper
 # initialize weights
 choiceWeights = rep(1, length(choices))
 choiceProbs = getProbabilities(choiceWeights, g)
-{% endhighlight %}
+```
 
 Each time I get new data, I can do the following to update my model. Note that I have coded my son's responses in the "Recognized" column, with 1 == recognized and 0 == not recognized. I can also assign scores in between, for example: 0.5 if he recognized the letter after being given a hint as to the sound it makes.
 
-{% highlight r %}
+```R
 ### load data ###
 trials = read.csv('AlphabetTrials.csv')
 # names(trials) -> c('Letter', 'Recognized')
@@ -69,19 +69,19 @@ for( i in 1:numTrials ){
   # get associated probabilities
   choiceProbs = getProbabilities(choiceWeights, g)
 }
-{% endhighlight %}
+```
 
 When I want to choose another set of 5 letters to practice, I can simply run:
 
-{% highlight r %}
+```R
 # get next 5 choices for future trials
 next5Choices = sample(choices,5,prob=choiceProbs)
 # c('U', 'A', 'Z', 'Y', 'F')
-{% endhighlight %}
+```
 
 This samples from the model's probability distribution of letters. After 72 trials, my distribution looks like this:
 
-{% highlight r %}
+```R
 # formatting
 par(lty=0)
 par(mar=c(3,4,1,1))
@@ -90,14 +90,14 @@ barplot(choiceProbs, names.arg = choices, col=myHeatColorRamp(5)[ceiling(choiceP
 par(lty='solid')
 # grid lines
 abline(h=seq(0.01, 0.06, 0.01), col=rgb(1, 1, 1, alpha=0.3), lwd=2,lty='solid')
-{% endhighlight %}
+```
 
 ![Letter Probabilities]({{ site.url }}/images/ProbabilityPerLetter.png)
 It looks like 'X', 'D', and 'C' are letters we may need to practice.
 
 I have really been enjoying this method and it seems to work well, but how do I know that it is better than other methods? Without knowing what he would answer for each letter in any given round, there are some ways I can estimate my effectiveness. Based on the results I have seen so far, I would estimate that my son had knowledge of about 30% of letters before we began and 48% now. Assuming that he has progressed linearly, I can compare the actual cumulative reward (ability to find letters he didn't know yet) to the expected cumulative reward from a purely random method.
 
-{% highlight r %}
+```R
 # optimal cumulative reward
 plot(1:numTrials, 1:numTrials, type='l', col=myColors[11], lwd=3, bty='n',xlab='Trials', ylab='Cumulative Reward')
 # grid lines
@@ -114,7 +114,7 @@ lines(1:numTrials, cumsum(1 - trials$Recognized), lwd=3, col=myColors[3])
 text(46, 54, labels='Optimal', cex=1.2, col=myColors[11])
 text(53, 43, labels='Actual', cex=1.2, col=myColors[3])
 text(67, 36, labels='Random', cex=1.2, col=myColors[4])
-{% endhighlight %}
+```
 
 ![Bandit Cumulative Reward]({{ site.url }}/images/cumulativeReward.png)
 
