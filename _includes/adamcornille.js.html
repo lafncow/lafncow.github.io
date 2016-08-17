@@ -27,28 +27,28 @@ if( abTests ){
 }
 
 filterArticlesByHashtag = function(hashtag){
-// hashtags
-if( hashtag == undefined ){
-    hashtag = location.hash.substr(1);
-}else{
-    location.hash = hashtag;
-}
-if( location.pathname == '/' && hashtag !== ""){
-    // viewing a hashtag filtered page (only enabled for home page)
-    var article,
-        articles = document.getElementsByTagName('article');
-    for( var i=0, ii=articles.length; i<ii; i++ ){
-        article = articles[i];
-        if( article.querySelector('.tag-'+hashtag.toLowerCase()) !== null ){
-            // this article matches
-            article.style.display = '';
-        }else{
-            // this one doesn't, hide it
-            article.style.display = 'none';
-        }
-    }
-}
-return false;
+	// hashtags
+	if( hashtag === undefined ){
+	    hashtag = location.hash.substr(1);
+	}else{
+	    location.hash = hashtag;
+	}
+	if( location.pathname === '/' && hashtag !== ""){
+	    // viewing a hashtag filtered page (only enabled for home page)
+	    var article,
+	        articles = document.getElementsByTagName('article');
+	    for( var i=0, ii=articles.length; i<ii; i++ ){
+	        article = articles[i];
+	        if( article.querySelector('.tag-'+hashtag.toLowerCase()) !== null ){
+	            // this article matches
+	            article.style.display = '';
+	        }else{
+	            // this one doesn't, hide it
+	            article.style.display = 'none';
+	        }
+	    }
+	}
+	return false;
 }
 filterArticlesByHashtag();
 
