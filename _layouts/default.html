@@ -65,7 +65,39 @@
         </footer>
       </div>
     </div>
-    {% include adamcornille.js.html %}
-    {% include analytics.js.html %}
+    <script type="text/javascript">
+      //Tag management
+      {% include tagging.js %}
+
+      var articles = document.getElementsByTagName('article');
+      //Filter to selected tag on page load
+      tagging.filterElements(tagging.getURLtag(), articles, tagging.hideOperator);
+      //Attach click handlers to hashtags
+      var tags = document.getElementsByClassName('tag');
+      var tagClickHandler = function (clickEvent) {
+          tagging.filterElements(clickEvent.target.dataset.hashtag, articles, tagging.hideOperator);
+        };
+      
+      for (var i = tags.length - 1; i >= 0; i--) {
+        tags[i].addEventListener('click', tagClickHandler);
+      }
+
+      //A/B testing
+      {% include abTesting.js %}
+
+      var abTests = [];
+      var abTestValues = [];
+
+      {% if page.abtests %}
+        abTests = {{ page.abtests }};
+        //Apply A/B tests
+        abTestValues = abTesting.showABtests(abTests);
+      {% endif %}
+
+      {% if site.google_analytics %}
+        //Google Analytics
+        {% include analytics.js %}
+      {% endif %}
+    </script>
   </body>
 </html>

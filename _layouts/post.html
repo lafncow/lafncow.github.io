@@ -9,7 +9,7 @@ layout: default
   <div class="tags">
     <ul>
     {% for tag in page.tags %}
-      <li><a class="tag-{{tag | downcase}}" href="{{ site.baseurl }}/#{{tag}}">#{{tag}}</a></li>
+      <li><a class="tag tag-{{tag | downcase}}" data-hashtag="{{tag | downcase}}" href="{{ site.baseurl }}/#{{tag}}">#{{tag}}</a></li>
     {% endfor %}
     </ul>
   </div>
