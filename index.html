@@ -10,11 +10,11 @@ layout: default
       
       {% if post.tags %}
 	  <div class="tags">
-	    <ul>
-	    {% for tag in post.tags %}
-	      <li><a class="tag-{{tag | downcase}}" href="{{ site.baseurl }}/#{{tag}}" onclick="filterArticlesByHashtag('{{tag}}')">#{{tag}}</a></li>
-	    {% endfor %}
-	    </ul>
+      <ul>
+      {% for tag in post.tags %}
+        <li><a class="tag tag-{{tag | downcase}}" data-hashtag="{{tag | downcase}}" href="{{ site.baseurl }}/#{{tag}}">#{{tag}}</a></li>
+      {% endfor %}
+      </ul>
 	  </div>
 	  {% endif %}
 
