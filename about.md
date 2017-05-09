@@ -8,7 +8,7 @@ Welcome to my outlet for statistical musings and experiments, I hope it is as en
 
 I grew up in the frosty Midwest. I studied at Madison, WI, and developed a fondness for beer & cheese. Many years ago I relocated to the glowing emerald city of the Pacific Northwest, where the profoundness of my caffeine habit is more socially acceptable.
 
-My career path has led me from design to development to statistics. I am able to draw on these 3 disciplines to solve problems and communicate results. I am passionate about my work and always finding something new to study. For the past 8 years, I have applied my skills to social media research & analysis.
+My career path has led me from design to development to statistics. I am able to draw on these 3 disciplines to solve problems and communicate results. I am passionate about my work and always finding something new to study. I design, develop, and deploy data science solutions. In the past 9 years, I have had the pleasure of using statistics to answer questions such as "How much product can we expect to sell in Kentucky next month?", "Which students are at risk of dropping out of high school and why?", "How many lives would this vaccine save if it succeeds?", and "where would be the ideal location for our next store?". My programming experience includes full-stack Javascript, R, Python, SQL, and many different technologies.
 
 I enjoy cooking, science fiction, traveling, brewing beer, hacking, motorcycles, hiking, and my beautiful family.
 
