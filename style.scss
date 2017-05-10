@@ -340,6 +340,42 @@ nav {
   }
 }
 
+.page {
+  blockquote {
+    margin: 1.8em .8em;
+    border-left: 5px solid $reddish;
+    padding: 0.1em 1em;
+    color: $darkGray;
+    font-size: 22px;
+    font-style: italic;
+    background: #EFEFEF;
+  }
+
+  blockquote blockquote {
+    margin: 0;
+    border: none;
+    padding: 0;
+    color: $gray;
+    font-size: 14px;
+    text-align: right;
+    font-style: normal;
+  }
+
+  blockquote.caption {
+    border-left: 2px solid #BADA55;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 5px 10px;
+    color: #404040;
+  }
+  blockquote.caption p{
+    margin:0;
+    padding:0;
+  }
+}
+
 .wrapper-footer {
   margin-top: 20px;
   border-top: 1px solid $lightGray;

@@ -14,7 +14,7 @@ I enjoy cooking, science fiction, traveling, brewing beer, hacking, motorcycles,
 
 [diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
 
-<a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">My Resume [pdf]</a>
+<a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">Resume [pdf]</a>
 
 > **Currently Reading:** <a href="https://www.nytimes.com/2016/12/27/books/review/other-minds-peter-godfrey-smith.html?_r=0" target="_blank">Other Minds: The Octopus, the Sea, and the Deep Origins of Consciousness</a>
 {: .caption}
