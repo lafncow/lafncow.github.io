@@ -16,7 +16,7 @@ I enjoy cooking, science fiction, traveling, brewing beer, hacking, motorcycles,
 
 <a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">Resume [pdf]</a>
 
-> **Currently Reading:** <a href="https://www.goodreads.com/book/show/20424928-apex" target="_blank">Apex - Ramez Naam</a>
+> **Currently Reading:** <a href="https://www.goodreads.com/book/show/20518872-the-three-body-problem" target="_blank">The Three-Body Problem - Liu Cixin</a>
 {: .caption}
 
 > **Currently Studying:** <a href="https://www.coursera.org/learn/neural-networks-deep-learning" target="_blank">Neural Networks and Deep Learning - Andrew Ng</a>
