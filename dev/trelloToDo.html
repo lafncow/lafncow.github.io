@@ -350,19 +350,19 @@ function resetCardLI(event) {
 };
 
 function selectBoardLI(event) {
-	var boardLI = event.target.value;
+	var boardLI = event.target;
 	var boardID = boardLI.dataset.tid;
 	getLists(boardID).done(loadLists).fail(displayError);
 };
 
 function selectListLI(event) {
-	var listLI = event.target.value;
+	var listLI = event.target;
 	var listID = listLI.dataset.tid;
 	getCards(listID).done(loadCards).fail(displayError);
 };
 
 function selectCardLI(event) {
-	var cardLI = event.target.value;
+	var cardLI = event.target;
 	var cardID = listLI.dataset.tid;
 	//Go to edit mode
 	console.log(cardHash[cardID]);
