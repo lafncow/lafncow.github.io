@@ -48,6 +48,7 @@ var execEnv = 'prod';
 var boards = [];
 var lists = [];
 var cards = [];
+var cardHash = {};
 var currentList = null;
 var swipeOptions = { dragLockToAxis: true, dragBlockHorizontal: true };
 
@@ -147,7 +148,8 @@ var loadBoards = function(boardData){
 	for (var i = boards.length - 1; i >= 0; i--) {
 		board = boards[i];
 		boardLI = document.createElement('li');
-		boardLI.id = 'card_'+board.id;
+		boardLI.id = 'board_'+board.id;
+		boardLI.dataset.tid = board.id;
 		boardLI.innerHTML = board.name;
 		//Style it correctly
 		boardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
@@ -177,6 +179,7 @@ var loadLists = function(lists){
 		list = lists[i];
 		listLI = document.createElement('li');
 		listLI.id = 'list_'+list.id;
+		listLI.dataset.tid = list.id;
 		listLI.innerHTML = list.name;
 		//Style it correctly
 		listLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
@@ -205,7 +208,8 @@ var loadCards = function(cards){
 	for (var i = cards.length - 1; i >= 0; i--) {
 		card = cards[i];
 		cardLI = document.createElement('li');
-		cardLI.id = 'list_'+card.id;
+		cardLI.id = 'card_'+card.id;
+		cardLI.dataset.tid = card.id;
 		cardLI.innerHTML = card.name;
 		//Style it correctly
 		cardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
@@ -250,14 +254,23 @@ var getLists = function(boardID){
 	}
 };
 
+var hashCards = function(cards){
+	for (var i = cards.length - 1; i >= 0; i--) {
+		var card = cards[i];
+		cardHash[card.id] = card;
+	}
+	return true;
+};
+
 var getCards = function(listID, filter){
 	if (execEnv === 'prod') {
 		// Fetch cards promise from API
 		filter = filter || '';
-		return Trello.get('/lists/'+listID+'/cards'+filter);
+		return Trello.get('/lists/'+listID+'/cards'+filter).then(hashCards);
 	} else {
 		// return a fake cards promise
 		var res = $.Deferred();
+		res.then(hashCards);
 		res.resolve(cards);
 		return res;
 	}
@@ -319,14 +332,14 @@ function dragCardLI(event) {
 
 function swipeCardLIRight(event) {
     var cardLI = event.target;
-    var cardID = cardLI.value;
+    var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
     advanceCard(cardHash[cardID]);
 };
 
 function swipeCardLILeft(event) {
     var cardLI = event.target;
-    var cardID = cardLI.value;
+    var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
     revertCard(cardHash[cardID]);
 };
@@ -338,21 +351,21 @@ function resetCardLI(event) {
 
 function selectBoardLI(event) {
 	var boardLI = event.target.value;
-	var boardID = boardLI.value;
+	var boardID = boardLI.dataset.tid;
 	getLists(boardID).done(loadLists).fail(displayError);
 };
 
 function selectListLI(event) {
 	var listLI = event.target.value;
-	var listID = listLI.value;
+	var listID = listLI.dataset.tid;
 	getCards(listID).done(loadCards).fail(displayError);
 };
 
 function selectCardLI(event) {
 	var cardLI = event.target.value;
-	var cardID = listLI.value;
+	var cardID = listLI.dataset.tid;
 	//Go to edit mode
-	console.log(cardID);
+	console.log(cardHash[cardID]);
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
