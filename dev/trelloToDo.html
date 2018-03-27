@@ -42,7 +42,8 @@
 </div>
 
 <script>
-var execEnv = 'prod';
+var execEnv = 'dev';
+var APIkey;
 //var execEnv = 'dev';
 //Track boards/lists/cards
 var boards = [];
@@ -129,6 +130,10 @@ var authTrello = function(){
 };
 
 var startApp = function(){
+	//Auth worked, save the API key for later
+	if (execEnv === 'prod') {
+		window.localStorage.setItem('APIkey', APIkey);
+	}
 	//Collect the user's boards
 	getBoards().done((res) => {
 		loadBoards(res);
@@ -370,7 +375,6 @@ function selectCardLI(event) {
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	//Check local storage for API key
-	var APIkey;
 	if (execEnv === 'prod') {
 		APIkey = window.localStorage.getItem('APIkey');
 	}
