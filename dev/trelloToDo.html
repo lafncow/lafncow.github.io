@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="js/hammer.min.js"></script>
+<style type="text/css">
+	body {
+		margin: 0;
+	}
+	div, ol, li {
+		font-family: "Open Sans", "Segoe", "Arial", sans-serif;
+		margin: 0;
+	}
+	ol {
+	    padding: 0;
+	    max-width: 24em;
+	    margin-top: 0;
+	    list-style-type: none;
+	    background: #ff0000;
+	}
+
+	li {
+	    position: relative;
+	    background-color: #cccccc;
+	    color: #333333;
+	    font-size: 1.125em;
+	    letter-spacing: 1px;
+	    font-weight: 300;
+	    text-align: center;
+	    padding: 1.1em;
+		cursor:e-resize;
+	}
+	li:hover {
+		background: #333333;
+	}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+<div id="main">
+	<ol id="currentList" style="display:none"></ol>
+</div>
+
+<script>
+var execEnv = 'prod';
+//var execEnv = 'dev';
+//Track boards/lists/cards
+var boards = [];
+var lists = [];
+var cards = [];
+var currentList = null;
+var swipeOptions = { dragLockToAxis: true, dragBlockHorizontal: true };
+
+if (execEnv !== 'prod') {
+	var boards = [
+		{id:1,name:'Home'},
+		{id:2,name:'Work'}
+	];
+	var lists = [
+		{id:11,name:'Backlog'},{id:12,name:'This Week'},{id:13,name:'Today'},{id:14,name:'Done'}
+	];
+	var cards = [
+		{id:1,name:'Test', desc:'First Card', pos:1},
+		{id:2,name:'Task', desc:'Second Card', pos:2},
+		{id:3,name:'Tisk', desc:'Third Card', pos:3},
+		{id:4,name:'Tusk', desc:'Fourth Card', pos:4},
+		{id:5,name:'Tryst', desc:'Fifth Card', pos:5},
+		{id:6,name:'Test', desc:'First Card', pos:6},
+		{id:7,name:'Task', desc:'Second Card', pos:7},
+		{id:8,name:'Tisk', desc:'Third Card', pos:8},
+		{id:9,name:'Tusk', desc:'Fourth Card', pos:9},
+		{id:10,name:'Tryst', desc:'Fifth Card', pos:10}
+	];
+}
+
+//Fetch list element
+var currentListOL = document.getElementById('currentList');
+var failedPromise = function(failMsg){
+	var f = $.Deferred();
+	f.reject(failMsg);
+	return f;
+};
+
+var bkgColor = function (i) {
+	var v = 56-Math.round(56*(Math.min(i, 25)/25))+170;
+	return 'rgba('+v+','+v+','+v+',1)';
+};
+
+var displayError = function(errorMsg) {
+  alert(errorMsg);
+};
+
+var loadTrelloLibrary = function(APIkey, cb){
+	if (execEnv === 'prod'){
+		// Find the right place to put the Trello library script
+		var js, fjs = document.getElementsByTagName('script')[0];
+		// Check that we haven't done this already
+		if (document.getElementById('trelloClientJS')){ return; }
+		// Make the script tag
+		js = document.createElement('script');
+		js.id = 'trelloClientJS';
+		// Set the callback hook
+		js.onload = function(){
+		    cb(); //...callback to start app
+		};
+		// Inject script with API key, creating 'Trello' object
+		js.src = "https://trello.com/1/client.js?key="+APIkey;
+		fjs.parentNode.insertBefore(js, fjs);
+	}else{
+		cb();
+	}
+};
+
+var authTrello = function(){
+	if (execEnv === 'prod'){
+		// 'Trello' object now exists
+		//Auth with Trello
+		Trello.authorize({
+			name: 'Trello To-Do List',
+			success: startApp, //...callback to load UI
+			error: displayError,
+			persist: true});
+	} else {
+		//...callback to load UI
+		startApp();
+	}
+	
+};
+
+var startApp = function(){
+	//Collect the user's boards
+	getBoards().done((res) => {
+		loadBoards(res);
+	}).fail(displayError);
+};
+
+var loadBoards = function(boardData){
+	//Save to global scope
+	boards = boardData;
+	//Hide board list
+	currentListOL.style.display = 'none';
+	//Clear the old stuff
+	currentListOL.innerHTML = '';
+	//TODO: ensure that no element references or handlers remain, hogging memory
+	//Populate boards in list
+	var board;
+	for (var i = boards.length - 1; i >= 0; i--) {
+		board = boards[i];
+		boardLI = document.createElement('li');
+		boardLI.id = 'card_'+board.id;
+		boardLI.innerHTML = board.name;
+		//Style it correctly
+		boardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
+		boardLI.style.background = bkgColor(i);
+		//Insert into DOM
+		currentListOL.appendChild(boardLI);
+		//Create hooks for board selection
+		var touchControl = new Hammer(boardLI, swipeOptions);
+        touchControl.on("panright", dragCardLI)
+                .on("swiperight tap", selectBoardLI)
+                .on("panend", resetCardLI);
+	}
+	//Show board list
+	currentListOL.style.display = 'block';
+};
+
+var loadLists = function(lists){
+	//Hide the list
+	currentListOL.style.display = 'none';
+	//Clear the old stuff
+	currentListOL.innerHTML = '';
+	//TODO Switch active board
+	//TODO: ensure that no element references or handlers remain, hogging memory
+	//Populate boards in list
+	var list;
+	for (var i = lists.length - 1; i >= 0; i--) {
+		list = lists[i];
+		listLI = document.createElement('li');
+		listLI.id = 'list_'+list.id;
+		listLI.innerHTML = list.name;
+		//Style it correctly
+		listLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
+		listLI.style.background = bkgColor(i);
+		//Insert into DOM
+		currentListOL.appendChild(listLI);
+		//Create hooks for board selection
+		var touchControl = new Hammer(listLI, swipeOptions);
+        touchControl.on("panright", dragCardLI)
+                .on("swiperight tap", selectListLI)
+                .on("panend", resetCardLI);
+	}
+	//Show board list
+	currentListOL.style.display = 'block';
+};
+
+var loadCards = function(cards){
+	//Hide the list
+	currentListOL.style.display = 'none';
+	//Clear the old stuff
+	currentListOL.innerHTML = '';
+	//TODO Switch active board
+	//TODO: ensure that no element references or handlers remain, hogging memory
+	//Populate boards in list
+	var card;
+	for (var i = cards.length - 1; i >= 0; i--) {
+		card = cards[i];
+		cardLI = document.createElement('li');
+		cardLI.id = 'list_'+card.id;
+		cardLI.innerHTML = card.name;
+		//Style it correctly
+		cardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
+		cardLI.style.background = bkgColor(i);
+		//Insert into DOM
+		currentListOL.appendChild(cardLI);
+		//Create hooks for board selection
+		var touchControl = new Hammer(cardLI, swipeOptions);
+        touchControl.on("panright panleft", dragCardLI)
+                .on("swiperight", swipeCardLIRight)
+                .on("swipeleft", swipeCardLILeft)
+                .on("tap", selectCardLI)
+                .on("panend", resetCardLI);
+	}
+	//Show board list
+	currentListOL.style.display = 'block';
+};
+
+//Define Trello functions
+var getBoards = function(){
+	if (execEnv === 'prod') {
+		// Fetch boards promise from API
+		return Trello.get('/member/me/boards');
+	} else {
+		// return a fake boards promise
+		var res = $.Deferred();
+		res.resolve(boards);
+		return res;
+	}
+};
+
+var getLists = function(boardID){
+	if (execEnv === 'prod') {
+		// Fetch lists promise from API
+		return Trello.get('/boards/'+boardID+'/lists');
+		var res = $.Deferred();
+	} else {
+		// return a fake lists promise
+		var res = $.Deferred();
+		res.resolve(lists);
+		return res;
+	}
+};
+
+var getCards = function(listID, filter){
+	if (execEnv === 'prod') {
+		// Fetch cards promise from API
+		filter = filter || '';
+		return Trello.get('/lists/'+listID+'/cards'+filter);
+	} else {
+		// return a fake cards promise
+		var res = $.Deferred();
+		res.resolve(cards);
+		return res;
+	}
+};
+
+var getCard = function(cardID){
+	return Trello.get('/cards/'+cardID);
+};
+
+var updateCard = function(card){
+	//name, desc, closed, idList, idLabels, idBoard, pos, due, dueComplete
+	return Trello.put('/cards/'+cardID, card);
+};
+
+var createCard = function(listID){
+	return Trello.post('/cards', {idList: listID});
+};
+
+var deleteCard = function(card){
+	return Trello.del('/cards/'+cardID);
+};
+
+var advanceCard = function(card){
+	//Get card's list
+	//Get next list
+	//Check if there is a next list
+	//No list found, reject this action
+	return failedPromise('No next list to push to.');
+	//Set card list to next
+	//Update card
+	return updateCard(cardID);
+};
+
+var revertCard = function(card){
+	//Get card's list
+	//Get previous list
+	//Check if there is a previous list
+	//No list found, reject this action
+	return failedPromise('No previous list to push to.');
+	//Set card list to previous
+	//Update card
+	return updateCard(card);
+};
+
+//Swipe handlers
+function dragCardLI(event) {
+    var cardLI = event.target;
+    if (!cardLI || !cardLI.parentElement) {
+    	return false;
+    }
+    // deltaX tracks the distance dragged along the x-axis since the initial touch.
+    if (event.deltaX > 0) {
+    	cardLI.parentElement.style.background = '#77aa22';
+    } else {
+    	cardLI.parentElement.style.background = '#DD5522';
+    }
+    cardLI.style.left = event.deltaX + 'px';
+};
+
+function swipeCardLIRight(event) {
+    var cardLI = event.target;
+    var cardID = cardLI.value;
+    cardLI.style.display = 'none';
+    advanceCard(cardHash[cardID]);
+};
+
+function swipeCardLILeft(event) {
+    var cardLI = event.target;
+    var cardID = cardLI.value;
+    cardLI.style.display = 'none';
+    revertCard(cardHash[cardID]);
+};
+
+function resetCardLI(event) {
+    var cardLI = event.target;
+    cardLI.style.left = 0;
+};
+
+function selectBoardLI(event) {
+	var boardLI = event.target.value;
+	var boardID = boardLI.value;
+	getLists(boardID).done(loadLists).fail(displayError);
+};
+
+function selectListLI(event) {
+	var listLI = event.target.value;
+	var listID = listLI.value;
+	getCards(listID).done(loadCards).fail(displayError);
+};
+
+function selectCardLI(event) {
+	var cardLI = event.target.value;
+	var cardID = listLI.value;
+	//Go to edit mode
+	console.log(cardID);
+};
+
+document.addEventListener("DOMContentLoaded", function(event) {
+	//Check local storage for API key
+	var APIkey;
+	if (execEnv === 'prod') {
+		APIkey = window.localStorage.getItem('APIkey');
+	}
+	if (!APIkey) {
+		//Get API key
+		APIkey = prompt("Please enter your Trello API Key", "xxxxx");
+	}
+
+	//Validate API key
+	if (APIkey == 'xxxxx' || !APIkey) {
+		alert('Invalid API key.');
+		return;
+	}
+
+	//Load Trello client.js with API key
+	//...callback will start the app
+	loadTrelloLibrary(APIkey, authTrello);
+});
+</script>
+</body>
+</html>
