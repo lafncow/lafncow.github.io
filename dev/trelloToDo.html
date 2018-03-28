@@ -125,7 +125,8 @@ var authTrello = function(){
 			name: 'Trello To-Do List',
 			success: startApp, //...callback to load UI
 			error: displayError,
-			persist: true});
+			persist: true,
+			scope: { read: true, write: true, account: false }});
 	} else {
 		//...callback to load UI
 		startApp();
