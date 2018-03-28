@@ -325,7 +325,7 @@ var advanceCard = function(card){
 	if (lists[nextListPos]) {
 		var nextListID = lists[nextListPos].id;
 		//Update card
-		return updateCard(cardID, {'idList': nextListID});
+		return updateCard(card.id, {'idList': nextListID});
 	} else {
 		//No list found, reject this action
 		return failedPromise('No next list to push to.');
@@ -341,7 +341,7 @@ var revertCard = function(card){
 	if (lists[prevtListPos]) {
 		var prevListID = lists[prevListPos].id;
 		//Update card
-		return updateCard(cardID, {'idList': prevListID});
+		return updateCard(card.id, {'idList': prevListID});
 	} else {
 		//No list found, reject this action
 		return failedPromise('No previous list to push to.');
@@ -367,6 +367,7 @@ function swipeCardLIRight(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
+    cardLI.parentElement.style.background = '#CCCCCC';
     advanceCard(cards[cardHash[cardID]])
     	.then(() => cardLI.parentNode.removeChild(cardLI))
     	.fail(() => cardLI.style.display = 'block')
@@ -377,6 +378,7 @@ function swipeCardLILeft(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
+    cardLI.parentElement.style.background = '#CCCCCC';
     revertCard(cards[cardHash[cardID]]);
 };
 
