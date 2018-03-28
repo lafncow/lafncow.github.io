@@ -28,7 +28,7 @@
 	    font-weight: 300;
 	    text-align: center;
 	    padding: 1.1em;
-	    margin: 1em;
+	    margin: 3px;
 		cursor:e-resize;
 		border-radius: 3px;
 		border-bottom: 1px solid #ccc;
@@ -339,7 +339,7 @@ var revertCard = function(card){
 	//Get previous list index
 	var prevListPos = listHash[cardListID]-1;
 	//Check if there is a previous list
-	if (lists[prevtListPos]) {
+	if (lists[prevListPos]) {
 		var prevListID = lists[prevListPos].id;
 		//Update card
 		return updateCard(card.id, {'idList': prevListID});
@@ -370,6 +370,7 @@ function swipeCardLIRight(event) {
     cardLI.style.display = 'none';
     cardLI.parentElement.style.background = '#CCCCCC';
     advanceCard(cards[cardHash[cardID]])
+    	.always(() => cardLI.parentElement.style.background = '#CCCCCC')
     	.then(() => cardLI.parentNode.removeChild(cardLI))
     	.fail(() => cardLI.style.display = 'block')
     	.fail(displayError);
@@ -380,12 +381,17 @@ function swipeCardLILeft(event) {
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
     cardLI.parentElement.style.background = '#CCCCCC';
-    revertCard(cards[cardHash[cardID]]);
+    revertCard(cards[cardHash[cardID]])
+    	.always(() => cardLI.parentElement.style.background = '#CCCCCC')
+    	.then(() => cardLI.parentNode.removeChild(cardLI))
+    	.fail(() => cardLI.style.display = 'block')
+    	.fail(displayError);
 };
 
 function resetCardLI(event) {
     var cardLI = event.target;
     cardLI.style.left = 0;
+    cardLI.parentElement.style.background = '#CCCCCC';
 };
 
 function selectBoardLI(event) {
