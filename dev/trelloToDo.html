@@ -43,7 +43,7 @@
 <div id="main">
 	<ol id="currentList" style="display:none"></ol>
 </div>
-<div id="addCard">Add a card...</div>
+<div id="addCard" style="display:none">Add a card...</div>
 <script>
 var execEnv = window.location.protocol === 'file:' ? 'dev' : 'prod';
 var APIkey;
@@ -322,7 +322,7 @@ var advanceCard = function(card){
 	//Get next list index
 	var nextListPos = listHash[cardListID]+1;
 	//Check if there is a next list
-	if (lists[nextListPos])
+	if (lists[nextListPos]) {
 		var nextListID = lists[nextListPos].id;
 		//Update card
 		return updateCard(cardID, {'idList': nextListID});
