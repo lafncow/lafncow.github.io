@@ -16,19 +16,22 @@
 	    max-width: 24em;
 	    margin-top: 0;
 	    list-style-type: none;
-	    background: #ff0000;
+	    background: #cccccc;
 	}
 
 	li {
 	    position: relative;
-	    background-color: #cccccc;
+	    background-color: #ffffff;
 	    color: #333333;
-	    font-size: 1.125em;
+	    font-size: 1em;
 	    letter-spacing: 1px;
 	    font-weight: 300;
 	    text-align: center;
 	    padding: 1.1em;
+	    margin: 1em;
 		cursor:e-resize;
+		border-radius: 3px;
+		border-bottom: 1px solid #ccc;
 	}
 	li:hover {
 		background: #333333;
@@ -40,9 +43,9 @@
 <div id="main">
 	<ol id="currentList" style="display:none"></ol>
 </div>
-
+<div id="addCard">Add a card...</div>
 <script>
-var execEnv = 'prod';
+var execEnv = window.location.protocol === 'file:' ? 'dev' : 'prod';
 var APIkey;
 //var execEnv = 'dev';
 //Track boards/lists/cards
@@ -50,7 +53,11 @@ var boards = [];
 var lists = [];
 var cards = [];
 var cardHash = {};
-var currentList = null;
+var listHash = {};
+var boardHash = {};
+var currentBoardID;
+var currentListID;
+var currentCardID;
 var swipeOptions = { dragLockToAxis: true, dragBlockHorizontal: true };
 
 if (execEnv !== 'prod') {
@@ -77,15 +84,12 @@ if (execEnv !== 'prod') {
 
 //Fetch list element
 var currentListOL = document.getElementById('currentList');
+var byPos = (a, b) => a.pos > b.pos;
+var sortByPos = (arr) => arr.sort(byPos);
 var failedPromise = function(failMsg){
 	var f = $.Deferred();
 	f.reject(failMsg);
 	return f;
-};
-
-var bkgColor = function (i) {
-	var v = 56-Math.round(56*(Math.min(i, 25)/25))+170;
-	return 'rgba('+v+','+v+','+v+',1)';
 };
 
 var displayError = function(errorMsg) {
@@ -150,7 +154,7 @@ var loadBoards = function(boardData){
 	//TODO: ensure that no element references or handlers remain, hogging memory
 	//Populate boards in list
 	var board;
-	for (var i = boards.length - 1; i >= 0; i--) {
+	for (var i = 0; i < boards.length; i++) {
 		board = boards[i];
 		boardLI = document.createElement('li');
 		boardLI.id = 'board_'+board.id;
@@ -158,7 +162,6 @@ var loadBoards = function(boardData){
 		boardLI.innerHTML = board.name;
 		//Style it correctly
 		boardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
-		boardLI.style.background = bkgColor(i);
 		//Insert into DOM
 		currentListOL.appendChild(boardLI);
 		//Create hooks for board selection
@@ -171,7 +174,9 @@ var loadBoards = function(boardData){
 	currentListOL.style.display = 'block';
 };
 
-var loadLists = function(lists){
+var loadLists = function(listData){
+	//Save to global scope
+	lists = listData;
 	//Hide the list
 	currentListOL.style.display = 'none';
 	//Clear the old stuff
@@ -180,7 +185,7 @@ var loadLists = function(lists){
 	//TODO: ensure that no element references or handlers remain, hogging memory
 	//Populate boards in list
 	var list;
-	for (var i = lists.length - 1; i >= 0; i--) {
+	for (var i = 0; i < lists.length; i++) {
 		list = lists[i];
 		listLI = document.createElement('li');
 		listLI.id = 'list_'+list.id;
@@ -188,7 +193,6 @@ var loadLists = function(lists){
 		listLI.innerHTML = list.name;
 		//Style it correctly
 		listLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
-		listLI.style.background = bkgColor(i);
 		//Insert into DOM
 		currentListOL.appendChild(listLI);
 		//Create hooks for board selection
@@ -201,7 +205,9 @@ var loadLists = function(lists){
 	currentListOL.style.display = 'block';
 };
 
-var loadCards = function(cards){
+var loadCards = function(cardData){
+	//Save to global scope
+	cards = cardData;
 	//Hide the list
 	currentListOL.style.display = 'none';
 	//Clear the old stuff
@@ -210,7 +216,7 @@ var loadCards = function(cards){
 	//TODO: ensure that no element references or handlers remain, hogging memory
 	//Populate boards in list
 	var card;
-	for (var i = cards.length - 1; i >= 0; i--) {
+	for (var i = 0; i < cards.length; i++) {
 		card = cards[i];
 		cardLI = document.createElement('li');
 		cardLI.id = 'card_'+card.id;
@@ -218,7 +224,6 @@ var loadCards = function(cards){
 		cardLI.innerHTML = card.name;
 		//Style it correctly
 		cardLI.style = "user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none; left: 0px;";
-		cardLI.style.background = bkgColor(i);
 		//Insert into DOM
 		currentListOL.appendChild(cardLI);
 		//Create hooks for board selection
@@ -237,7 +242,7 @@ var loadCards = function(cards){
 var getBoards = function(){
 	if (execEnv === 'prod') {
 		// Fetch boards promise from API
-		return Trello.get('/member/me/boards');
+		return Trello.get('/member/me/boards').done(sortByPos).then(hashBoards);
 	} else {
 		// return a fake boards promise
 		var res = $.Deferred();
@@ -249,8 +254,7 @@ var getBoards = function(){
 var getLists = function(boardID){
 	if (execEnv === 'prod') {
 		// Fetch lists promise from API
-		return Trello.get('/boards/'+boardID+'/lists');
-		var res = $.Deferred();
+		return Trello.get('/boards/'+boardID+'/lists').done(sortByPos).then(hashLists);
 	} else {
 		// return a fake lists promise
 		var res = $.Deferred();
@@ -259,19 +263,33 @@ var getLists = function(boardID){
 	}
 };
 
-var hashCards = function(cards){
-	for (var i = cards.length - 1; i >= 0; i--) {
-		var card = cards[i];
-		cardHash[card.id] = card;
+var hashCards = function(cardArr){
+	cardHash = {};
+	for (var i = 0; i < cardArr.length; i++) {
+		var card = cardArr[i];
+		cardHash[card.id] = i;
 	}
-	return true;
+};
+var hashLists = function(listArr){
+	listHash = {};
+	for (var i = 0; i < listArr.length; i++) {
+		var list = listArr[i];
+		listHash[list.id] = i;
+	}
+};
+var hashBoards = function(boardArr){
+	boardHash = {};
+	for (var i = 0; i < boardArr.length; i++) {
+		var board = boardArr[i];
+		boardHash[board.id] = i;
+	}
 };
 
 var getCards = function(listID, filter){
 	if (execEnv === 'prod') {
 		// Fetch cards promise from API
 		filter = filter || '';
-		return Trello.get('/lists/'+listID+'/cards'+filter).then(hashCards);
+		return Trello.get('/lists/'+listID+'/cards'+filter).done(sortByPos).then(hashCards);
 	} else {
 		// return a fake cards promise
 		var res = $.Deferred();
@@ -285,9 +303,9 @@ var getCard = function(cardID){
 	return Trello.get('/cards/'+cardID);
 };
 
-var updateCard = function(card){
+var updateCard = function(cardID, cardUpdates){
 	//name, desc, closed, idList, idLabels, idBoard, pos, due, dueComplete
-	return Trello.put('/cards/'+cardID, card);
+	return Trello.put('/cards/'+cardID, cardUpdates);
 };
 
 var createCard = function(listID){
@@ -300,24 +318,34 @@ var deleteCard = function(card){
 
 var advanceCard = function(card){
 	//Get card's list
-	//Get next list
+	var cardListID = card.idList;
+	//Get next list index
+	var nextListPos = listHash[cardListID]+1;
 	//Check if there is a next list
-	//No list found, reject this action
-	return failedPromise('No next list to push to.');
-	//Set card list to next
-	//Update card
-	return updateCard(cardID);
+	if (lists[nextListPos])
+		var nextListID = lists[nextListPos].id;
+		//Update card
+		return updateCard(cardID, {'idList': nextListID});
+	} else {
+		//No list found, reject this action
+		return failedPromise('No next list to push to.');
+	}
 };
 
 var revertCard = function(card){
 	//Get card's list
-	//Get previous list
+	var cardListID = card.idList;
+	//Get previous list index
+	var prevListPos = listHash[cardListID]-1;
 	//Check if there is a previous list
-	//No list found, reject this action
-	return failedPromise('No previous list to push to.');
-	//Set card list to previous
-	//Update card
-	return updateCard(card);
+	if (lists[prevtListPos])
+		var prevListID = lists[prevListPos].id;
+		//Update card
+		return updateCard(cardID, {'idList': prevListID});
+	} else {
+		//No list found, reject this action
+		return failedPromise('No previous list to push to.');
+	}
 };
 
 //Swipe handlers
@@ -339,14 +367,17 @@ function swipeCardLIRight(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
-    advanceCard(cardHash[cardID]);
+    advanceCard(cards[cardHash[cardID]])
+    	.then(() => cardLI.parentNode.removeChild(cardLI))
+    	.fail(() => cardLI.style.display = 'block')
+    	.fail(displayError);
 };
 
 function swipeCardLILeft(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
-    revertCard(cardHash[cardID]);
+    revertCard(cards[cardHash[cardID]]);
 };
 
 function resetCardLI(event) {
@@ -357,20 +388,27 @@ function resetCardLI(event) {
 function selectBoardLI(event) {
 	var boardLI = event.target;
 	var boardID = boardLI.dataset.tid;
-	getLists(boardID).done(loadLists).fail(displayError);
+	getLists(boardID)
+		.done(loadLists)
+		.then(() => currentBoardID = boardID)
+		.fail(displayError);
 };
 
 function selectListLI(event) {
 	var listLI = event.target;
 	var listID = listLI.dataset.tid;
-	getCards(listID).done(loadCards).fail(displayError);
+	getCards(listID)
+		.done(loadCards)
+		.then(() => currentListID = listID)
+		.fail(displayError);
 };
 
 function selectCardLI(event) {
 	var cardLI = event.target;
 	var cardID = listLI.dataset.tid;
 	//Go to edit mode
-	console.log(cardHash[cardID]);
+	//TODO create edit UI
+	console.log(cards[cardHash[cardID]]);
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
