@@ -338,7 +338,7 @@ var revertCard = function(card){
 	//Get previous list index
 	var prevListPos = listHash[cardListID]-1;
 	//Check if there is a previous list
-	if (lists[prevtListPos])
+	if (lists[prevtListPos]) {
 		var prevListID = lists[prevListPos].id;
 		//Update card
 		return updateCard(cardID, {'idList': prevListID});
