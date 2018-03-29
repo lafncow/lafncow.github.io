@@ -6,44 +6,59 @@
 <style type="text/css">
 	body {
 		margin: 0;
+		background: #eee;
 	}
 	div, ol, li {
 		font-family: "Open Sans", "Segoe", "Arial", sans-serif;
 		margin: 0;
+		text-align: center;
+	}
+	h1 {
+		font-size: 2.5em;
 	}
 	ol {
 	    padding: 0;
-	    max-width: 24em;
+	    margin-left: auto;
+	    margin-right: auto;
+	    max-width: 80em;
 	    margin-top: 0;
+	    margin-bottom: 0;
 	    list-style-type: none;
-	    background: #cccccc;
 	}
 
 	li {
 	    position: relative;
 	    background-color: #ffffff;
 	    color: #333333;
-	    font-size: 1em;
-	    letter-spacing: 1px;
-	    font-weight: 300;
-	    text-align: center;
-	    padding: 1.1em;
-	    margin: 3px;
-		cursor:e-resize;
-		border-radius: 3px;
-		border-bottom: 1px solid #ccc;
+	    font-size: 3em;
+	    padding: 1em;
+	    margin: 0.5em;
+		cursor: e-resize;
+		border-radius: 0.25em;
+		border-bottom: 0.1em solid #ccc;
 	}
-	li:hover {
-		background: #333333;
+
+	div .addBtn {
+		cursor: pointer;
 	}
 </style>
 </head>
 <body>
 <div id="nav"></div>
-<div id="main">
-	<ol id="currentList" style="display:none"></ol>
+<div id="main" style="display:none">
+	<ol id="currentList"></ol>
+	<div id="addBoard" class='addBtn' style="display:none">Add a board...</div>
+	<div id="addList" class='addBtn' style="display:none">Add a list...</div>
+	<div id="addCard" class='addBtn' style="display:none">Add a card...</div>
 </div>
-<div id="addCard" style="display:none">Add a card...</div>
+<div id="editCard" style="display:none">
+		<input id="cardNameInput" type="text" name="cardName" placeholder="Name"><br>
+		<textarea id="cardDescInput" rows="4" cols="50" name="cardDesc" placeholder="Description">
+		</textarea><br>
+		<button id="updateCard" style="display:none">Update</button>
+		<button id="createCard" style="display:none">Create</button>
+		<button id="cancelCard" style="display:none">Cancel</button>
+</div>
 <script>
 var execEnv = window.location.protocol === 'file:' ? 'dev' : 'prod';
 var APIkey;
@@ -83,7 +98,20 @@ if (execEnv !== 'prod') {
 }
 
 //Fetch list element
+var mainDiv = document.getElementById('main');
+var navDiv = document.getElementById('nav');
+var editCardDiv = document.getElementById('editCard');
+var updateCardBtn = document.getElementById('updateCard');
+var createCardBtn = document.getElementById('createCard');
+var cancelCardBtn = document.getElementById('cancelCard');
+var cardNameInput = document.getElementById('cardNameInput');
+var cardDescInput = document.getElementById('cardDescInput');
 var currentListOL = document.getElementById('currentList');
+var addCardBtn = document.getElementById('addCard');
+var addListBtn = document.getElementById('addList');
+var addBoardBtn = document.getElementById('addBoard');
+var cardNameInput = document.getElementById('cardNameInput');
+var cardDescInput = document.getElementById('cardDescInput');
 var byPos = (a, b) => a.pos > b.pos;
 var sortByPos = (arr) => arr.sort(byPos);
 var failedPromise = function(failMsg){
@@ -149,7 +177,7 @@ var loadBoards = function(boardData){
 	//Save to global scope
 	boards = boardData;
 	//Hide board list
-	currentListOL.style.display = 'none';
+	mainDiv.style.display = 'none';
 	//Clear the old stuff
 	currentListOL.innerHTML = '';
 	//TODO: ensure that no element references or handlers remain, hogging memory
@@ -172,14 +200,15 @@ var loadBoards = function(boardData){
                 .on("panend", resetCardLI);
 	}
 	//Show board list
-	currentListOL.style.display = 'block';
+	viewMode();
+	showAddBtn('board');
 };
 
 var loadLists = function(listData){
 	//Save to global scope
 	lists = listData;
 	//Hide the list
-	currentListOL.style.display = 'none';
+	mainDiv.style.display = 'none';
 	//Clear the old stuff
 	currentListOL.innerHTML = '';
 	//TODO Switch active board
@@ -202,15 +231,18 @@ var loadLists = function(listData){
                 .on("swiperight tap", selectListLI)
                 .on("panend", resetCardLI);
 	}
-	//Show board list
-	currentListOL.style.display = 'block';
+	//Show list list
+	viewMode();
+	showAddBtn('list');
 };
 
 var loadCards = function(cardData){
+	sortByPos(cardData);
+	hashCards(cardData);
 	//Save to global scope
 	cards = cardData;
 	//Hide the list
-	currentListOL.style.display = 'none';
+	mainDiv.style.display = 'none';
 	//Clear the old stuff
 	currentListOL.innerHTML = '';
 	//TODO Switch active board
@@ -235,8 +267,69 @@ var loadCards = function(cardData){
                 .on("tap", selectCardLI)
                 .on("panend", resetCardLI);
 	}
-	//Show board list
-	currentListOL.style.display = 'block';
+	//Show card list
+	viewMode();
+	showAddBtn('card');
+};
+
+var editMode = function (cardID) {
+	//get card
+	var card = cards[cardHash[cardID]];
+	//Record selection
+	currentCardID = cardID;
+	//Hide other UI
+	navDiv.style.display = 'none';
+	mainDiv.style.display = 'none';
+	createCardBtn.style.display = 'none';
+	//Populate inputs
+	cardNameInput.value = card.name;
+	cardDescInput.value = card.desc;
+	//Show editor
+	editCardDiv.style.display = 'block';
+	updateCardBtn.style.display = 'block';
+};
+
+var showAddBtn = function(btnType) {
+	//btnType = 'board'|'list'|'card'
+	btnType = btnType || 'card';
+	//Name-case it
+	btnType = btnType.toLowerCase();
+	btnType = btnType[0].toUpperCase() + btnType.slice(1);
+	//Get the DOM
+	var btn = document.getElementById('add'+btnType);
+	//Hide the others
+	hideAddBtns();
+	//Show this one
+	btn.style.display = 'block';
+};
+
+var hideAddBtns = function() {
+	//Get the DOM
+	//Hide them
+	$('.addBtn').css('display','none');
+};
+
+var createMode = function () {
+	//Hide other UI
+	navDiv.style.display = 'none';
+	mainDiv.style.display = 'none';
+	updateCardBtn.style.display = 'none';
+	//Clear inputs
+	cardNameInput.value = '';
+	cardDescInput.value = '';
+	//Show editor
+	editCardDiv.style.display = 'block';
+	createCardBtn.style.display = 'block';
+};
+
+var viewMode = function () {
+	//Hide editor
+	createCardBtn.style.display = 'none';
+	updateCardBtn.style.display = 'none';
+	editCardDiv.style.display = 'none';
+	//Show other UI
+	navDiv.style.display = 'block';
+	mainDiv.style.display = 'block';
 };
 
 //Define Trello functions
@@ -290,11 +383,10 @@ var getCards = function(listID, filter){
 	if (execEnv === 'prod') {
 		// Fetch cards promise from API
 		filter = filter || '';
-		return Trello.get('/lists/'+listID+'/cards'+filter).done(sortByPos).then(hashCards);
+		return Trello.get('/lists/'+listID+'/cards'+filter);
 	} else {
 		// return a fake cards promise
 		var res = $.Deferred();
-		res.then(hashCards);
 		res.resolve(cards);
 		return res;
 	}
@@ -306,11 +398,33 @@ var getCard = function(cardID){
 
 var updateCard = function(cardID, cardUpdates){
 	//name, desc, closed, idList, idLabels, idBoard, pos, due, dueComplete
-	return Trello.put('/cards/'+cardID, cardUpdates);
+	if (execEnv === 'prod') {
+		return Trello.put('/cards/'+cardID, cardUpdates);
+	} else {
+		// return a fake card promise
+		var res = $.Deferred();
+		var cardData = cards[cardHash[cardID]];
+		cardData.name = cardUpdates.name || cardData.name;
+		cardData.desc = cardUpdates.desc || cardData.desc;
+		res.resolve(cardData);
+		return res;
+	}
 };
 
-var createCard = function(listID){
-	return Trello.post('/cards', {idList: listID});
+var createCard = function(listID, cardData){
+	//name, desc, closed, idList, idLabels, idBoard, pos, due, dueComplete
+	if (execEnv === 'prod') {
+		cardData = cardData || {};
+		cardData.idList = listID;
+		return Trello.post('/cards', cardData);
+	} else {
+		// return a fake card promise
+		var res = $.Deferred();
+		cardData.pos = 100;
+		cardData.idList = listID;
+		res.resolve(cardData);
+		return res;
+	}
 };
 
 var deleteCard = function(card){
@@ -349,6 +463,48 @@ var revertCard = function(card){
 	}
 };
 
+//Handlers
+function attachStaticEventHandlers(){
+	//Hook for "Add a card..." button
+	$(addCardBtn).click(createMode);
+	//Hook submit
+	$(createCardBtn).click(function(event){
+		//Get card details
+		var cardData = {
+			name: cardNameInput.value,
+			desc: cardDescInput.value
+		};
+		//Create the card
+		createCard(currentListID, cardData)
+			.done(function(newCard){
+				//Add card
+				cards.push(newCard);
+				//Re-load cards
+				loadCards(cards);
+			})
+			.fail(displayError)
+			.fail(viewMode);
+	});
+	//Hook cancel
+	$(cancelCardBtn).click(viewMode);
+	//Hook update
+	$(updateCardBtn).click(function(event){
+		//Get card details
+		var cardData = {
+			name: cardNameInput.value,
+			desc: cardDescInput.value
+		};
+		//Create the card
+		updateCard(currentCardID, cardData)
+			.done(function(newCard){
+				//Re-load cards
+				loadCards(cards);
+			})
+			.fail(displayError)
+			.fail(viewMode);
+	});
+};
+
 //Swipe handlers
 function dragCardLI(event) {
     var cardLI = event.target;
@@ -357,9 +513,9 @@ function dragCardLI(event) {
     }
     // deltaX tracks the distance dragged along the x-axis since the initial touch.
     if (event.deltaX > 0) {
-    	cardLI.parentElement.style.background = '#77aa22';
+    	document.body.style.background = '#77aa22';
     } else {
-    	cardLI.parentElement.style.background = '#DD5522';
+    	document.body.style.background = '#DD5522';
     }
     cardLI.style.left = event.deltaX + 'px';
 };
@@ -367,10 +523,11 @@ function dragCardLI(event) {
 function swipeCardLIRight(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
+    console.log(cardID);
     cardLI.style.display = 'none';
-    cardLI.parentElement.style.background = '#CCCCCC';
+    document.body.style.background = '#eee';
     advanceCard(cards[cardHash[cardID]])
-    	.always(() => cardLI.parentElement.style.background = '#CCCCCC')
+    	.always(() => document.body.style.background = '#eee')
     	.then(() => cardLI.parentNode.removeChild(cardLI))
     	.fail(() => cardLI.style.display = 'block')
     	.fail(displayError);
@@ -380,9 +537,9 @@ function swipeCardLILeft(event) {
     var cardLI = event.target;
     var cardID = cardLI.dataset.tid;
     cardLI.style.display = 'none';
-    cardLI.parentElement.style.background = '#CCCCCC';
+    document.body.background = '#eee';
     revertCard(cards[cardHash[cardID]])
-    	.always(() => cardLI.parentElement.style.background = '#CCCCCC')
+    	.always(() => document.body.style.background = '#eee')
     	.then(() => cardLI.parentNode.removeChild(cardLI))
     	.fail(() => cardLI.style.display = 'block')
     	.fail(displayError);
@@ -391,10 +548,11 @@ function swipeCardLILeft(event) {
 function resetCardLI(event) {
     var cardLI = event.target;
     cardLI.style.left = 0;
-    cardLI.parentElement.style.background = '#CCCCCC';
+    document.body.style.background = '#eee';
 };
 
 function selectBoardLI(event) {
+	console.log('selectBoardLI');
 	var boardLI = event.target;
 	var boardID = boardLI.dataset.tid;
 	getLists(boardID)
@@ -414,10 +572,10 @@ function selectListLI(event) {
 
 function selectCardLI(event) {
 	var cardLI = event.target;
-	var cardID = listLI.dataset.tid;
+	var cardID = cardLI.dataset.tid;
+	currentCardID = cardID;
 	//Go to edit mode
-	//TODO create edit UI
-	console.log(cards[cardHash[cardID]]);
+	editMode(currentCardID);
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -427,11 +585,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 	if (!APIkey) {
 		//Get API key
-		APIkey = prompt("Please enter your Trello API Key", "xxxxx");
+		APIkey = prompt("Please enter your Trello API Key", "");
 	}
 
 	//Validate API key
-	if (APIkey == 'xxxxx' || !APIkey) {
+	if (APIkey == '' || !APIkey) {
 		alert('Invalid API key.');
 		return;
 	}
@@ -439,6 +597,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	//Load Trello client.js with API key
 	//...callback will start the app
 	loadTrelloLibrary(APIkey, authTrello);
+
+	//Set up events
+	attachStaticEventHandlers();
 });
 </script>
 </body>
