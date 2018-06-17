@@ -149,6 +149,12 @@ var loadTrelloLibrary = function(APIkey, cb){
 	}
 };
 
+var authError = function(){
+	forgetAPIkey();
+	displayError('Auth Failed');
+	return;
+};
+
 var authTrello = function(){
 	if (execEnv === 'prod'){
 		// 'Trello' object now exists
@@ -156,7 +162,7 @@ var authTrello = function(){
 		Trello.authorize({
 			name: 'Trello To-Do List',
 			success: startApp, //...callback to load UI
-			error: displayError,
+			error: authError,
 			persist: true,
 			scope: { read: true, write: true, account: false }});
 	} else {
@@ -582,6 +588,10 @@ function selectCardLI(event) {
 	editMode(currentCardID);
 };
 
+function forgetAPIkey() {
+	return window.localStorage.removeItem('APIkey');
+};
+
 document.addEventListener("DOMContentLoaded", function(event) {
 	//Check local storage for API key
 	if (execEnv === 'prod') {
@@ -594,7 +604,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	//Validate API key
 	if (APIkey == '' || !APIkey) {
-		alert('Invalid API key.');
+		displayError('Invalid API key.');
+		forgetAPIkey();
 		return;
 	}
 
