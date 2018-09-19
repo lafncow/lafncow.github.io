@@ -180,7 +180,7 @@ var startApp = function(){
 	//Collect the user's boards
 	getBoards().done((res) => {
 		loadBoards(res);
-	}).fail(displayError);
+	}).fail(authError);
 };
 
 var loadBoards = function(boardData){
