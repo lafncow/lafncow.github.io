@@ -151,6 +151,7 @@ var loadTrelloLibrary = function(APIkey, cb){
 
 var authError = function(){
 	forgetAPIkey();
+	forgetToken();
 	displayError('Auth Failed');
 	return;
 };
@@ -591,6 +592,10 @@ function selectCardLI(event) {
 
 function forgetAPIkey() {
 	return window.localStorage.removeItem('APIkey');
+};
+	
+function forgetToken() {
+	return window.localStorage.removeItem('trello_token');
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {
