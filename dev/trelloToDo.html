@@ -164,6 +164,7 @@ var authTrello = function(){
 			success: startApp, //...callback to load UI
 			error: authError,
 			persist: true,
+			type: 'popup',
 			scope: { read: true, write: true, account: false }});
 	} else {
 		//...callback to load UI
