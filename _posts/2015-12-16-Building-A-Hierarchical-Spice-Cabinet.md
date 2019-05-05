@@ -95,6 +95,10 @@ text(spicePCA$x[1:numSpices],spicePCA$x[(1:numSpices)+numSpices]-0.02, colnames(
 
 Given a K of 6, k-means develops exactly the same grouping! PCA does reveal some similarity between the herb, French, and specialty clusters.
 
+I took things a few steps father by creating an algorithm to find a shortest path that connects the spices without repeating. Tracing the path would be a form of ideal layout in my cabinet. Lastly, I used the top 3 PCA dimensions to plot this path and animate it:
+
+![3DspiceClustering]({{ site.url }}/images/spices3Dplot.gif)
+
 > He who controls the Spice, controls the universe!
 >
 > > --Baron Harkonnen
