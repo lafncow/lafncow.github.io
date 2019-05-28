@@ -4,20 +4,16 @@ title: About Me
 permalink: /about/
 ---
 <img src="http://adamcornille.com/images/AdamCornille_Circle_sm.png" alt="Me" style="float: left;margin-right: 16px;">
-Welcome to my outlet for statistical musings and experiments, I hope it is as enjoyable to read as it is to write! As I learn new techniques, I constantly see them reflected in my life and I hope to share them here.
+I'm a data science manager and practitioner with over a decade of field experience. Trained in development, statistics, and management practices. I lead the development of data science solutions and strategies for improving business maturity in the application of data. I love my work and my teams.
 
-I grew up in the frosty Midwest. I studied at Madison, WI, and developed a fondness for beer & cheese. Many years ago I relocated to the glowing emerald city of the Pacific Northwest, where the profoundness of my caffeine habit is more socially acceptable.
+In my career I have had the pleasure to use statistics to answer questions such as "How many lives would this vaccine save if it succeeds?", "Which medical records are incomplete?", "Which students are at risk of dropping out of high school and why?", and "Where should we open our next store?". I have worked extensively with Python, Javascript, SQL, R, and many other technologies. I am especially fascinated by applications of machine learning that enhance the quality of everyday life.
 
-My career path has led me from design to development to statistics. I am able to draw on these 3 disciplines to solve problems and communicate results. I am passionate about my work and always finding something new to study. I design, develop, and deploy data science solutions. In the past 9 years, I have had the pleasure of using statistics to answer questions such as _"How much product can we expect to sell in Kentucky next month?"_, _"Which students are at risk of dropping out of high school and why?"_, _"How many lives would this vaccine save if it succeeds?"_, and _"where would be the ideal location for our next store?"_. My programming experience includes full-stack Javascript, R, Python, SQL, and many different technologies.
+I grew up in a land of cold winters, hot summers, diverse beers, and much cheese. I live in the beautiful Pacific Northwest, where the profoundness of my caffeine habit is more socially acceptable, and it's amazing here (don't tell anyone).
 
-I enjoy cooking, science fiction, traveling, brewing beer, hacking, motorcycles, hiking, and my beautiful family.
+I like cooking, science fiction, traveling, brewing beer, hacking, motorcycles, hiking, and my amazing family.
 
 [diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
 
 <a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">Resume [pdf]</a>
 
-> **Currently Reading:** <a href="https://www.goodreads.com/book/show/20518872-the-three-body-problem" target="_blank">The Three-Body Problem - Liu Cixin</a>
-{: .caption}
-
-> **Currently Studying:** <a href="https://www.coursera.org/learn/neural-networks-deep-learning" target="_blank">Neural Networks and Deep Learning - Andrew Ng</a>
 {: .caption}
