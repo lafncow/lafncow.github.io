@@ -18,17 +18,17 @@ avatar: /images/headerImage.png
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email: diggity+website@adamcornille.com
+  email: lafncow+website@gmail.com
   facebook:
   flickr:
-  github:
+  github: https://github.com/lafncow
   instagram:
   bitcoin: 1CGn1XZJi3tidEPMcFSsvu6x8c33woGvto
   linkedin: adam-cornille-8aa689b
   pinterest:
   rss: rss # just type anything here for a working RSS icon, make sure you set the "url" above!
-  twitter: lafncow
-  mastodon: "https://mastodon.social/@lafncow"
+  twitter: 
+  mastodon:
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/

@@ -12,7 +12,7 @@ I grew up in a land of cold winters, hot summers, diverse beers, and much cheese
 
 I like cooking, science fiction, traveling, brewing beer, hacking, motorcycles, hiking, and my amazing family.
 
-[diggity@adamcornille.com](mailto:diggity+website@adamcornille.com)
+[lafncow@gmail.com](mailto:lafncow+website@gmail.com)
 
 <a href="http://adamcornille.com/docs/Adam_Cornille.pdf" target="_blank">Resume [pdf]</a>
 
